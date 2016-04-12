@@ -39,7 +39,7 @@ def word(w):
             result = urlopen("http://www.wolframcloud.com/objects/bdf9bbc4-6b59-4821-9053-9d453f7a9b39",
                              urlencode(arguments))
         except:
-            raise Failure("Internet connection required for full dictionary, only providing small dictionary currently")
+            print "Internet connection required for full dictionary, only providing small dictionary currently"
         return result.read()
 
     textresult = wolfram_cloud_call(x=fixed)

@@ -88,5 +88,3 @@ def interpreter(t, boolreturn=False):
             raise InterpretationError(str(type(x)) + " " + str(x) + " is not of " + str(t))
 
     return inter
-
-del Infinity, InterpretationError

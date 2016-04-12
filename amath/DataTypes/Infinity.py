@@ -14,7 +14,7 @@ class _Infinity:
                 return 0
         if self.n:
             return 1
-        elif not self.n:
+        elif self.n == False:
             return -1
         else:
             raise Failure("Cannot be compared")
@@ -47,12 +47,10 @@ class _Infinity:
     def __repr__(self):
         if self.n:
             return "inf"
-        elif not self.n:
+        elif self.n == False:
             return "-inf"
         else:
             return "Complex Infinity"
 
 
 Infinity = type("Infinity", (_Infinity, object), {})
-
-del Failure

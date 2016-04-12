@@ -1,5 +1,6 @@
-from amath.Computation.rounding import trunc
+from amath.Computation.rounding import trunc, floor
 from amath.Computation.relationship import gcd
+
 
 class _Fraction():
     """
@@ -37,7 +38,7 @@ class _Fraction():
         if (type(self.numerator) is not complex) and (type(self.denominator) is not complex):
             if self.denominator < 0:
                 self.denominator = abs(self.denominator)
-                self.numerator = -1 * self.numerator
+                self.numerator *= -1
         if self.denominator == 0:
             raise ZeroDivisionError
         self.whole = trunc(frtodec(self))
@@ -111,9 +112,11 @@ class _Fraction():
         """
         return self.__truediv__(other)
 
-    def __pow__(self, x):
-        y = pow(self.numerator, x)
-        z = pow(self.denominator, x)
+    def __pow__(self, power, modulo=None):
+        y = pow(self.numerator, power)
+        z = pow(self.denominator, power)
+        if modulo is not None:
+            return Fraction(y,z)%modulo
         return Fraction(y, z)
 
     def __str__(self):
@@ -320,4 +323,4 @@ def frtodec(x):
         raise TypeError("Argument must be a fraction")
     return float(x.numerator) / float(x.denominator)
 
-del trunc
+

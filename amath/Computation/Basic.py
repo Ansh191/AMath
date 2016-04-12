@@ -63,6 +63,7 @@ def d(*x):
 def a(*x):
     """
     addition
+    ========
     :param x: tuple
     :return:
 

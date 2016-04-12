@@ -90,5 +90,3 @@ def ln(x):
         z = (1.0 / i) * (float(x - 1) / x) ** i
         y += z
     return y
-
-del e

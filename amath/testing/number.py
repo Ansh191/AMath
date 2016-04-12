@@ -175,5 +175,3 @@ def cube(x):
         return True
     else:
         return False
-
-del gcd, factors, sqrt, root

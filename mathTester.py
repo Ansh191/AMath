@@ -34,7 +34,7 @@ def test_infinityless():
 def test_infinityComplex():
     try:
         return m.Cinf == 5
-    except ValueError:
+    except m.Failure:
         assert True
 
 
@@ -114,25 +114,25 @@ class TestFraction:
         assert int(Fraction(5, 4)) == 1
 
 
-class TestTime:
-    def test_add(self):
-        assert timeObject(1, 2, 3, 4) + timeObject(1, 2, 3, 4) == timeObject(2, 4, 6, 8)
-
-    def test_sub(self):
-        assert timeObject(4, 4, 4, 4) - timeObject(1, 1, 1, 1) == timeObject(3, 3, 3, 3)
-
-    def test_greater(self):
-        assert timeObject(1, 2, 3, 5) > timeObject(1, 2, 3, 4)
-
-    def test_less(self):
-        assert timeObject(1, 2, 3, 4) < timeObject(1, 2, 3, 5)
-
-    def test_equal(self):
-        assert timeObject(1, 2, 3, 4) == timeObject(1, 2, 3, 4)
-
-    def test_to12(self):
-        x = timeObject(1, 2, 3, 4)
-        # assert x.to12() == '01:02:03.004 AM'
+# class TestTime:
+#     def test_add(self):
+#         assert timeObject(1, 2, 3, 4) + timeObject(1, 2, 3, 4) == timeObject(2, 4, 6, 8)
+#
+#     def test_sub(self):
+#         assert timeObject(4, 4, 4, 4) - timeObject(1, 1, 1, 1) == timeObject(3, 3, 3, 3)
+#
+#     def test_greater(self):
+#         assert timeObject(1, 2, 3, 5) > timeObject(1, 2, 3, 4)
+#
+#     def test_less(self):
+#         assert timeObject(1, 2, 3, 4) < timeObject(1, 2, 3, 5)
+#
+#     def test_equal(self):
+#         assert timeObject(1, 2, 3, 4) == timeObject(1, 2, 3, 4)
+#
+#     def test_to12(self):
+#         x = timeObject(1, 2, 3, 4)
+#         # assert x.to12() == '01:02:03.004 AM'
 
 
 def test_abs():

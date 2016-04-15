@@ -1,8 +1,9 @@
 from amath.Computation.rounding import trunc, floor
 from amath.Computation.relationship import gcd
+from amath.Computation.num_properties import digits
 
 
-class _Fraction():
+class _Fraction:
     """
     Fraction Class. Used to create a data type
     """
@@ -112,11 +113,11 @@ class _Fraction():
         """
         return self.__truediv__(other)
 
-    def __pow__(self, power, modulo=None):
+    def __pow__(self, power, modulo = None):
         y = pow(self.numerator, power)
         z = pow(self.denominator, power)
         if modulo is not None:
-            return Fraction(y,z)%modulo
+            return Fraction(y, z) % modulo
         return Fraction(y, z)
 
     def __str__(self):
@@ -236,12 +237,12 @@ class _Fraction():
 
     def __abs__(self):
         if self.numerator < 0:
-            return Fraction(-(self.numerator),self.denominator)
+            return Fraction(-self.numerator, self.denominator)
         else:
             return self
 
     def __neg__(self):
-        return Fraction(-(self.numerator), self.denominator)
+        return Fraction(-self.numerator, self.denominator)
 
     def __pos__(self):
         return Fraction(self.numerator, self.denominator)
@@ -250,7 +251,7 @@ class _Fraction():
 Fraction = type("Fraction", (_Fraction, object), {})
 
 
-def dectofr(x, error=0.00000001):
+def dectofr(x, error = 0.00000001):
     """
     Converts decimals to fractions
     :param x: decimal to convert
@@ -322,5 +323,3 @@ def frtodec(x):
     if not isinstance(x, Fraction):
         raise TypeError("Argument must be a fraction")
     return float(x.numerator) / float(x.denominator)
-
-

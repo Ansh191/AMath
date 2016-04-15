@@ -15,9 +15,9 @@ def gcd(x, y):
             x = y
             y = f
         if x == 0:
-            return int(y)
+            return y
         elif y == 0:
-            return int(x)
+            return x
         z = x % y
         x = z
     return 0

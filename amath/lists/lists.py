@@ -181,12 +181,17 @@ def choose(l, f):
     return o
 
 
-def reorder(x, gtol=False):
-    """reorders the list from least to greatest"""
+def reorder(x, r=False):
+    """
+    Reorders the list
+    :param x: list to be reordered
+    :param r: reverse
+    :return: ordered list
+
+    >>> reorder([1,3,2])
+    """
     o = list(x)
     o.sort()
-    if gtol:
+    if r:
         o.reverse()
     return o
-
-del primeQ

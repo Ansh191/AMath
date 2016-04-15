@@ -143,3 +143,23 @@ def abs(x):
         return x
     else:
         return -x
+
+def fac(x):
+    """
+    Finds x factorial
+    :param x: integer
+    :return: x factorial
+
+    >>> fac(0)
+    1
+    >>> fac(5)
+    120
+    """
+    if type(x) is not int:
+        raise TypeError("A integer is required")
+    if x == 0:
+        return 1
+    elif x < 0:
+        raise TypeError("Not for negative values")
+    else:
+        return x * fac(x - 1)

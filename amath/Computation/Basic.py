@@ -1,4 +1,3 @@
-
 def sqrt(x):
     """Returns square root of X
     :param x:
@@ -144,7 +143,9 @@ def abs(x):
     else:
         return -x
 
+
 def fac(x):
+    # type: (int) -> int
     """
     Finds x factorial
     :param x: integer

@@ -77,7 +77,7 @@ def log(x, base = e):
         if i > x:
             break
 
-        _ = _ + 1000000
+        _ += 1000000
         o = _ - 1000000
         i = pow(base, _)
 

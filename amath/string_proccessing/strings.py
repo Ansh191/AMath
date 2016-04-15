@@ -1,8 +1,8 @@
-from amath.Errors.Errors import Failure
+from __future__ import print_function
 
 eng_words = None
-with open("C:\\Users\\Anshul\\PycharmProjects\\AMath\\amath\string_proccessing\words.txt") as word_list:
-    eng_words = set(word.strip().lower() for word in word_list)
+#with open("C:\\Users\\Anshul\\PycharmProjects\\AMath\\amath\string_proccessing\words.txt") as word_list:
+    #eng_words = set(word.strip().lower() for word in word_list)
 
 ascii = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
          "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D",
@@ -39,7 +39,7 @@ def word(w):
             result = urlopen("http://www.wolframcloud.com/objects/bdf9bbc4-6b59-4821-9053-9d453f7a9b39",
                              urlencode(arguments))
         except:
-            print "Internet connection required for full dictionary, only providing small dictionary currently"
+            print("Internet connection required for full dictionary, only providing small dictionary currently")
         return result.read()
 
     textresult = wolfram_cloud_call(x=fixed)
@@ -74,5 +74,3 @@ def wordcount(s):
     fixed = whitespace(s)
     all_words = fixed.split()
     return len(all_words)
-
-del Failure

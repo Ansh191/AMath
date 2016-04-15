@@ -49,7 +49,7 @@ class _Infinity:
         if isinstance(other, _Infinity):
             if other.n == self.n:
                 return 0
-        if self.n == True:
+        if self.n:
             return 1
         elif self.n == False:
             return -1
@@ -132,7 +132,7 @@ class decimal:
 
 import sys as _sys
 
-#_sys.tracebacklimit = 0
+# _sys.tracebacklimit = 0
 del _sys
 
 e = 2.71828182845904523536028747135266249775724709369995957496696762772407
@@ -315,7 +315,7 @@ class DateError(Exception):
     pass
 
 
-def dectofr(x, error=0.0000001):
+def dectofr(x, error = 0.0000001):
     """
     Converts decimals to fractions
     :param x: decimal to convert
@@ -560,7 +560,7 @@ class _Fraction():
 
     def __abs__(self):
         if self.numerator < 0:
-            return Fraction(-(self.numerator),self.denominator)
+            return Fraction(-(self.numerator), self.denominator)
         else:
             return self
 
@@ -635,8 +635,9 @@ Fraction = type("Fraction", (_Fraction, object), {})
 
 
 class _timeObject:
-    def __init__(self, h=None, m=None, s=None, ms=0):
+    def __init__(self, h = None, m = None, s = None, ms = 0):
         import datetime as dt
+
         self.h = 0
         self.m = 0
         self.s = 0
@@ -768,6 +769,7 @@ class _timeObject:
     @staticmethod
     def now(self):
         import datetime as dt
+
         x = dt.datetime.now()
         return timeObject(x.hour, x.minute, x.second, x.microsecond / 1000)
 
@@ -776,7 +778,7 @@ timeObject = type("timeObject", (_timeObject, object), {})
 
 
 class _dateObject:
-    def __init__(self, m=None, d=None, y=None):
+    def __init__(self, m = None, d = None, y = None):
         if d is None:
             if m is None:
                 if y != None:
@@ -792,6 +794,7 @@ class _dateObject:
 
         if d is None:
             import datetime as dt
+
             x = dt.datetime.now()
             self.d = x.day
             self.m = x.month
@@ -933,6 +936,7 @@ class _dateObject:
     @staticmethod
     def now(self):
         import datetime as dt
+
         x = dt.datetime.now()
         return dateObject(x.month, x.day, x.year)
 
@@ -941,7 +945,7 @@ dateObject = type("dateObject", (_dateObject, object), {})
 
 
 class _dateTime:
-    def __init__(self, y=None, m=None, d=None, h=None, min=None, s=None, ms=None):
+    def __init__(self, y = None, m = None, d = None, h = None, min = None, s = None, ms = None):
         self.date = dateObject(m, d, y)
         self.time = timeObject(h, min, s, ms)
         self.y = self.date.y
@@ -1382,7 +1386,7 @@ def expm1(x):
         return expm1(x) - 1.0
 
 
-def log(x, base=e):
+def log(x, base = e):
     """Returns log of x"""
     i = pow(base, 0)
     o = 0
@@ -1472,7 +1476,7 @@ def clip(x):
         return x
 
 
-def reorder(x, gtol=False):
+def reorder(x, gtol = False):
     """reorders the list from least to greatest"""
     o = list(x)
     o.sort()
@@ -1829,9 +1833,10 @@ def nextprime(n):
     return f
 
 
-def sample(pop, k, seed=None):
+def sample(pop, k, seed = None):
     from random import sample as s
     from random import seed as se
+
     if seed != None:
         se(seed)
     return s(pop, k)
@@ -2057,7 +2062,7 @@ def ssd(l):
     return sqrt(float(a) / (len(sl) - 1))
 
 
-def Sum(f, i=None, maximum=None, step=1, l=None):
+def Sum(f, i = None, maximum = None, step = 1, l = None):
     try:
         if type(f(2)) != float:
             if type(f(2)) != int:
@@ -2091,7 +2096,7 @@ def Sum(f, i=None, maximum=None, step=1, l=None):
         return x
 
 
-def Product(f, i=None, maximum=None, step=1, l=None):
+def Product(f, i = None, maximum = None, step = 1, l = None):
     try:
         if type(f(2)) != float:
             if type(f(2)) != int:
@@ -2180,9 +2185,10 @@ def perm(n, k):
     return float(fac(n)) / fac(n - k)
 
 
-def exppro(p, n, sd=None):
+def exppro(p, n, sd = None):
     from random import randint
     from random import seed
+
     p = p * 100
     if sd != None:
         seed(sd)
@@ -2381,7 +2387,7 @@ def applyList(l, f):
     return x
 
 
-def interpreter(t, boolreturn=False):
+def interpreter(t, boolreturn = False):
     y = False
     if type(t) is not type(type):
         if type(t) is not type(Fraction):
@@ -2426,6 +2432,7 @@ def reverse(l):
 def word(word):
     from urllib import urlencode
     from urllib2 import urlopen
+
     if type(word) is not str:
         raise TypeError("s must be a string")
     fixed = whitespace(word)
@@ -2441,7 +2448,7 @@ def word(word):
             raise Failure("Internet connection required for full dictionary, only providing small dictionary currently")
         return result.read()
 
-    textresult = wolfram_cloud_call(x=fixed)
+    textresult = wolfram_cloud_call(x = fixed)
     if textresult == "{}":
         return False
     else:
@@ -2456,24 +2463,26 @@ def wordcount(s):
     return len(all_words)
 
 
-def pGenerator(length, words=False):
+def pGenerator(length, words = False):
     if type(length) is not int:
         raise TypeError("length must be an integer")
     if not words:
         import random as _r
         import os as _os
+
         _r.seed(_os.urandom(1024))
         return "".join(_r.choice(ascii) for i in range(length))
     elif words:
         import random as _r
         import os as _os
+
         _r.seed(_os.urandom(1024))
         return whitespace("".join("{0} ".format(_r.choice(list(eng_words))) for i in range(length)))
     else:
         raise TypeError("words must be a bool value")
 
 
-def normalDist(x=None, u=0, o=1):
+def normalDist(x = None, u = 0, o = 1):
     def normal(y):
         return (exp((-1 / 2.0) * pow((float(y - u) / o), 2))) / (o * sqrt(2 * pi))
 
@@ -2648,7 +2657,7 @@ def formulaLookup(x):
             raise Failure("Cannot connect to servers")
         return result.read()
 
-    textresult = wolfram_cloud_call(x=x)
+    textresult = wolfram_cloud_call(x = x)
     return textresult
 
 

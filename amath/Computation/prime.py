@@ -14,6 +14,10 @@ def prime(n):
                 raise TimeoutException()
         except EOFError:
             raise IDEError("Please use another IDE as this one doesn't support raw_input")
+        except NameError:
+            z = input("Are you sure you want to continue? This will take a while:(y or n) ")
+            if z == "n":
+                raise TimeoutException()
     while n2 != n:
         test = primeQ(f)
         if test:
@@ -36,6 +40,10 @@ def primepi(n):
                 raise TimeoutException()
         except EOFError:
             raise IDEError("Please use another IDE as this one doesn't support raw_input")
+        except NameError:
+            z = input("Are you sure you want to continue? This will take a while:(y or n) ")
+            if z == "n":
+                raise TimeoutException()
     while f < n:
         test = primeQ(f)
         if test:

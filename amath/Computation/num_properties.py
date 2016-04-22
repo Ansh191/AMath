@@ -9,11 +9,8 @@ def factors(x):
 
 
 def NFactors(x):
-    y = 0
     nl = factors(x)
-    for i in nl:
-        y += 1
-    return y
+    return len(nl)
 
 
 def sign(x):
@@ -56,7 +53,6 @@ def frexp(x):
     >>> frexp(8)
     (0.5, 4)
     """
-    p = pow(2, 0)
     i = 0
     m = 0.0
     correct = False

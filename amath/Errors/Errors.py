@@ -1,5 +1,4 @@
 class TimeoutException(Exception):
-    """docstring for TimeoutException"""
     pass
 
 

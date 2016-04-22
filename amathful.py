@@ -189,7 +189,7 @@ pi = 3.14159265358979323846264338327950288419716939937510582097494459230781
 2221066118630674427862203919494504712371378696095636437191728746776465
 75739624138908658326459958133904780275901  # pi
 gr = goldenratio = (1 + sqrt(5)) / 2.0  # Golden Ratio
-ec = EuterMascheroni = 0.5772156649015328606065120900824024310421  # Euler–Mascheroni constant
+ec = EuterMascheroni = 0.5772156649015328606065120900824024310421  # Euler Mascheroni constant
 O = Omega = 0.5671432904097838729999686622103555497538157871865125081351310792230457930866  # Omega
 rf = reciprocalfib = 3.35988566624317755317201130291892717968890513373196848649555381532513031899668338361541621645679008729704  # Reciprocal Fibonacci
 G = 6.67408e-11
@@ -1551,8 +1551,7 @@ def rescale(x, small, large):
 
 # TODO-everyone fix sin
 def sin(a):
-    """Returns sin(a)"""
-    return (e ** (a * 1j)).imag
+    return (e ** (1j * a)).imag
 
 
 # TODO-everyone fix cos
@@ -1562,7 +1561,7 @@ def cos(a):
     :param a:
     :return:
     """
-    return (e ** (a * 1j)).real
+    return (e ** (1j * a)).real
 
 
 def tan(a):

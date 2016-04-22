@@ -110,7 +110,11 @@ def s(*x):
     return y
 
 
+# noinspection PyShadowingBuiltins
 def abs(x):
+    # type: (complex) -> float
+    # type: (int) -> float
+    # type: (float) -> float
     """
     Returns the absolute value of a float
     :param x: float, int, complex

@@ -1,5 +1,6 @@
 from amath.testing import evenQ
 
+
 def ceil(x):
     """
     Returns the ceiling of a number
@@ -13,7 +14,6 @@ def ceil(x):
     >>> ceil(-5.3)
     -5
     """
-    y = 0
     try:
         if type(x) == str:
             forstring = float(x)
@@ -42,10 +42,6 @@ def floor(x):
     -6
     >>> floor(0)
     0
-    >>> floor("hi")
-    Traceback (most recent call last):
-    ValueError: invalid literal for int() with base 10: 'hi'
-
     """
     try:
         y = int(x)
@@ -67,7 +63,6 @@ def trunc(x):
     >>> trunc(-5.2)
     -5
     """
-    y = 0
     if x > 0:
         y = floor(x)
     else:
@@ -75,9 +70,9 @@ def trunc(x):
     return y
 
 
-def round(x):
+def fround(x):
     """
-    Rounds X to nearest integer
+    rounds X to nearest integer
     :param x:
     :return:
 
@@ -109,5 +104,3 @@ def round(x):
                 return intx
     except ValueError:
         raise TypeError("A float or integer is required")
-
-del evenQ

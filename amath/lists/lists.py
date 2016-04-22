@@ -14,6 +14,7 @@ def applylist(l, f):
     :param f: function
     :return:
 
+    >>> from amath.Computation.Basic import fac
     >>> applylist([1,2,3,4], fac)
     [1, 2, 6, 24]
     """
@@ -181,7 +182,8 @@ def choose(l, f):
     return o
 
 
-def reorder(x, r=False):
+def reorder(x, r = False):
+    # type: (list, bool) -> list
     """
     Reorders the list
     :param x: list to be reordered
@@ -189,6 +191,7 @@ def reorder(x, r=False):
     :return: ordered list
 
     >>> reorder([1,3,2])
+    [1, 2, 3]
     """
     o = list(x)
     o.sort()

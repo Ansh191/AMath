@@ -1,3 +1,4 @@
+from __future__ import print_function, division
 from amath.constants import e
 
 
@@ -12,6 +13,7 @@ def exp(x):
     return e ** x
 
 
+# noinspection PyShadowingBuiltins
 def pow(x, y):
     """
     X to the Y power
@@ -70,16 +72,8 @@ def expm1(x):
 # TODO-everyone work on log
 def log(x, base = e):
     """Returns log of x"""
-    i = pow(base, 0)
-    o = 0
-    _ = 0
-    while True:
-        if i > x:
-            break
-
-        _ += 1000000
-        o = _ - 1000000
-        i = pow(base, _)
+    print(x, base)
+    pass
 
 
 def ln(x):

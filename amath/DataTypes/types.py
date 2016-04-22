@@ -46,6 +46,7 @@ def _g():
 GeneratorType = type(_g())
 
 
+# noinspection PyClassHasNoInit
 class _C:
     def _m(self): pass
 
@@ -82,5 +83,3 @@ GetSetDescriptorType = type(FunctionType.func_code)
 MemberDescriptorType = type(FunctionType.func_globals)
 
 del sys, _f, _g, _C, _x  # Not for export
-
-

@@ -17,4 +17,6 @@ from .constants import *
 
 # from .random import *
 
+del Errors, DataTypes, Computation, lists, string_proccessing, testing, constants
+
 __all__ = list(n for n in dir() if n[:1] != '_')

@@ -3,7 +3,7 @@ from amath.Computation.relationship import gcd
 from amath.Computation.num_properties import digits
 
 
-class _Fraction:
+class _fraction:
     """
     Fraction Class. Used to create a data type
     """
@@ -121,15 +121,7 @@ class _Fraction:
         return Fraction(y, z)
 
     def __str__(self):
-        if type(self) is tuple:
-            if self[1] < 0:
-                return "%s/%s" % (self[0], -1 * self[1])
-            else:
-                return "%s/%s" % (self[0], self[1])
-        elif self.denominator == 1:
-            return str(self.numerator)
-        else:
-            return "%s/%s" % (self.numerator, self.denominator)
+        return "%s/%s" % (self.numerator, self.denominator)
 
     def __cmp__(self, other):
         """
@@ -188,6 +180,7 @@ class _Fraction:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        # noinspection PyBroadException
         try:
             del self.denominator
             del self.numerator
@@ -200,6 +193,7 @@ class _Fraction:
             del self.__div__
             del self.digits
             del self.is_int
+            del exc_tb, exc_type, exc_val
         except:
             pass
 
@@ -248,7 +242,7 @@ class _Fraction:
         return Fraction(self.numerator, self.denominator)
 
 
-Fraction = type("Fraction", (_Fraction, object), {})
+Fraction = type("Fraction", (_fraction, object), {})
 
 
 def dectofr(x, error = 0.00000001):

@@ -9,6 +9,7 @@ def prime(n):
         raise ValueError("n must be greater than 0")
     if n > 1e6:
         try:
+            # noinspection PyCompatibility
             z = raw_input("Are you sure you want to continue? This will take a while:(y or n) ")
             if z == "n":
                 raise TimeoutException()
@@ -35,6 +36,7 @@ def primepi(n):
         raise ValueError("n must be greater than 0")
     if n > 1000000:
         try:
+            # noinspection PyCompatibility
             z = raw_input("Are you sure you want to continue? This will take a while:(y or n) ")
             if z == "n":
                 raise TimeoutException()

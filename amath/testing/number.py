@@ -86,7 +86,7 @@ def isPro(x, y):
     if len(x) < 2:
         raise ValueError("length of lists must be greater than 1")
     if len(x) != len(y):
-        raise TypeError("lenght of lists must be greater than one")
+        raise TypeError("length of lists must be same")
 
     s = 0
     f = False
@@ -103,7 +103,7 @@ def isPro(x, y):
             if n2 == 0:
                 return False
 
-        cs = n2 / n
+        cs = float(n2) / n
         if not f:
             s = cs
             f = True

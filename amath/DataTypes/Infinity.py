@@ -45,12 +45,15 @@ class _Infinity:
         return self.__truediv__(other)
 
     def __repr__(self):
-        if self.n:
-            return "inf"
-        elif self.n is False:
-            return "-inf"
-        else:
-            return "Complex Infinity"
+        try:
+            if self.n:
+                return "inf"
+            elif self.n is False:
+                return "-inf"
+            else:
+                return "Complex Infinity"
+        except AttributeError:
+            return None
 
 
 Infinity = type("Infinity", (_Infinity, object), {})

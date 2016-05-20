@@ -5,7 +5,6 @@ def sin(a):
     return (e ** (1j * a)).imag
 
 
-# TODO-everyone fix cos
 def cos(a):
     """
     Return the Cosine of x
@@ -39,8 +38,4 @@ def csc(a):
 
 
 def asin(a):
-    """Returns the arcsine of a"""
-    pass
-    if a > 1.00 or a < -1.00:
-        raise ValueError("math domain error")
-    return rad(a)
+

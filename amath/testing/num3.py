@@ -3,7 +3,22 @@ from amath.Computation.num_properties import factors
 from amath.Computation.Basic import sqrt
 from amath.Computation.power import root
 
+
 def evenQ(x):
+    # type: (int) -> bool
+    """
+    Checks if x is even
+    :param x:
+    :return:
+
+    >>> evenQ(5)
+    False
+    >>> evenQ(6)
+    True
+    >>> evenQ(5.5)
+    Traceback (most recent call last):
+    ValueError: A integer is required
+    """
     if type(x) != int:
         raise ValueError("A integer is required")
     if x % 2 == 0:
@@ -137,10 +152,11 @@ def coprime(x, y):
 
 def perfect(x):
     """Checks if x is a perfect number"""
-    fac = factors(x)[1:-1]
+    fac = factors(x)
     y = 0
     for i in fac:
         y += i
+        y -= x
     if y == x:
         return True
     else:
@@ -150,7 +166,7 @@ def perfect(x):
 def square(x):
     """checks if x is a square number"""
     sq = sqrt(x)
-    if type(sq) == type(5):
+    if float.is_integer(sq):
         return True
     else:
         return False

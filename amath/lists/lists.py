@@ -1,3 +1,4 @@
+from __future__ import print_function
 from amath.testing import primeQ
 
 
@@ -20,8 +21,11 @@ def applylist(l, f):
     """
     try:
         f(2)
-    except TypeError:
-        raise TypeError("f must be a function")
+    except TypeError as tp:
+        if "callable" in str(tp.args):
+            raise TypeError("f must be a function")
+        elif "arguments" in str(tp.args):
+            raise TypeError("f must take only 1 argument")
     if type(l) is not list:
         raise TypeError("l must be a list")
     x = []
@@ -63,9 +67,14 @@ def delcases(l, f):
     p = []
     try:
         if type(f(2)) != bool:
-            raise ValueError("Function must return Boolean value")
-    except TypeError:
-        raise TypeError(str(f) + " is not a function")
+            raise TypeError("Function must return Boolean value")
+    except TypeError as tp:
+        if "callable" in str(tp.args):
+            raise TypeError("f must be a function")
+        elif "arguments" in str(tp.args):
+            raise TypeError("f must take only 1 argument")
+        else:
+            raise
     if type(l) != list:
         raise TypeError(str(l) + " is not a list")
     for i in l:
@@ -89,9 +98,14 @@ def cases(l, f):
     p = []
     try:
         if type(f(2)) != bool:
-            raise ValueError("Function must return Boolean value")
-    except TypeError:
-        raise TypeError("f must be a function")
+            raise TypeError("Function must return Boolean value")
+    except TypeError as tp:
+        if "callable" in str(tp.args):
+            raise TypeError("f must be a function")
+        elif "arguments" in str(tp.args):
+            raise TypeError("f must take only 1 argument")
+        else:
+            raise
     if type(l) != list:
         raise TypeError("l must be a list")
     for i in l:
@@ -103,9 +117,14 @@ def cases(l, f):
 def nonetrue(l, f):
     try:
         if type(f(2)) != bool:
-            raise ValueError("Function must return Boolean value")
-    except TypeError:
-        raise TypeError("f must be a function")
+            raise TypeError("Function must return Boolean value")
+    except TypeError as tp:
+        if "callable" in str(tp.args):
+            raise TypeError("f must be a function")
+        elif "arguments" in str(tp.args):
+            raise TypeError("f must take only 1 argument")
+        else:
+            raise
     for x in l:
         if f(x):
             return False
@@ -128,9 +147,14 @@ def anytrue(l, f):
     """
     try:
         if type(f(2)) != bool:
-            raise ValueError("Function must return Boolean value")
-    except TypeError:
-        raise TypeError("f must be a function")
+            raise TypeError("Function must return Boolean value")
+    except TypeError as tp:
+        if "callable" in str(tp.args):
+            raise TypeError("f must be a function")
+        elif "arguments" in str(tp.args):
+            raise TypeError("f must take only 1 argument")
+        else:
+            raise
     for x in l:
         if f(x):
             return True
@@ -151,9 +175,14 @@ def alltrue(l, f):
     """
     try:
         if type(f(2)) != bool:
-            raise ValueError("Function must return Boolean value")
-    except TypeError:
-        raise TypeError("f must be a function")
+            raise TypeError("Function must return Boolean value")
+    except TypeError as tp:
+        if "callable" in str(tp.args):
+            raise TypeError("f must be a function")
+        elif "arguments" in str(tp.args):
+            raise TypeError("f must take only 1 argument")
+        else:
+            raise
     for x in l:
         if not f(x):
             return False
@@ -172,9 +201,14 @@ def choose(l, f):
     """
     try:
         if type(f(2)) != bool:
-            raise ValueError("Function must return Boolean value")
-    except TypeError:
-        raise TypeError("f must be a function")
+            raise TypeError("Function must return Boolean value")
+    except TypeError as tp:
+        if "callable" in str(tp.args):
+            raise TypeError("f must be a function")
+        elif "arguments" in str(tp.args):
+            raise TypeError("f must take only 1 argument")
+        else:
+            raise
     o = []
     for x in l:
         if f(x):

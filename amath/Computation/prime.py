@@ -68,5 +68,3 @@ def nextprime(n):
         f += 1
     return f
 
-
-del TimeoutException, IDEError, primeQ

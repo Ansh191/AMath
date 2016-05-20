@@ -16,15 +16,6 @@ from .testing import *
 from .constants import *
 
 # from .random import *
-import sys
 
-if sys.version_info[0] < 3:
-    from .Errors.internet2 import test
-    test()
-    del test
-else:
-    from .Errors.internet3 import test
-    test()
-    del test
 
 __all__ = list(n for n in dir() if n[:1] != '_')

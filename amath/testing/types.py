@@ -1,4 +1,4 @@
-from amath.DataTypes import Infinity
+from amath.DataTypes.Infinity import Infinity
 from amath.Errors import InterpretationError
 
 

@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 
-with open("C:\\Users\\Anshul\\PycharmProjects\\AMath\\amath\string_proccessing\words.txt") as word_list:
+with open("C:\\Users\\ansg1\\PycharmProjects\\AMath\\amath\\string_proccessing\\words.txt") as word_list:
     eng_words = set(word.strip().lower() for word in word_list)
 
 ascii = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",

@@ -3,6 +3,7 @@ from amath.Computation.num_properties import factors
 from amath.Computation.Basic import sqrt
 from amath.Computation.power import root
 
+
 def evenQ(x):
     if type(x) != int:
         raise ValueError("A integer is required")

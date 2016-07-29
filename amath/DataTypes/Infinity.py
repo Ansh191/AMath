@@ -1,4 +1,4 @@
-from amath.Errors import Failure
+from amath.Errors import Failure, Indeterminate
 
 
 class _Infinity:
@@ -54,6 +54,7 @@ class _Infinity:
                 return "Complex Infinity"
         except AttributeError:
             return None
+
 
 
 Infinity = type("Infinity", (_Infinity, object), {})

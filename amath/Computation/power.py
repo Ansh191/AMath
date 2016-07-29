@@ -70,17 +70,50 @@ def expm1(x):
 
 
 # TODO-everyone work on log
-def log(x, base = e):
+def log(x, base, error=0.000001):
     """Returns log of x"""
-    print(x, base)
-    pass
+    return float(ln(x, error)) / float(ln(base, error))
 
 
-def ln(x):
-    if x <= 0:
+def ln(z, error=0.000001):
+    if z <= 0:
         raise ValueError("math domain error")
-    y = 0
-    for i in range(1, 999999999):
-        z = (1.0 / i) * (float(x - 1) / x) ** i
-        y += z
-    return y
+
+    x = 0
+    y = e ** x
+    minimum = 0
+    maximum = 0
+    Begin = True
+    while True:
+        if y == z:
+            return x
+        elif (z - error) < y < (z + error):
+            return x
+
+        if z > 1:
+            if y < z:
+                if Begin is True:
+                    minimum = x
+                    x += 1
+                else:
+                    minimum = x
+                    x = (minimum + maximum) / 2.0
+            elif y > z:
+                Begin = False
+                maximum = x
+                x = (minimum + maximum) / 2.0
+
+        else:
+            if y > z:
+                if Begin is True:
+                    maximum = x
+                    x -= 1
+                else:
+                    maximum = x
+                    x = (minimum + maximum) / 2.0
+            elif y < z:
+                Begin = False
+                minimum = x
+                x = (minimum + maximum) / 2.0
+
+        y = e ** x

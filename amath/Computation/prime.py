@@ -68,3 +68,7 @@ def nextprime(n):
         f += 1
     return f
 
+
+#def primeFactorize(n):
+#    if
+

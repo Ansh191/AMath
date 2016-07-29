@@ -38,4 +38,4 @@ def csc(a):
 
 
 def asin(a):
-
+    pass

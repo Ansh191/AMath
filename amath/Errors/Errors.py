@@ -38,3 +38,8 @@ class DateError(Exception):
     Basic Date Error
     """
     pass
+
+class Indeterminate(Exception):
+    """
+    The could not be determined
+    """

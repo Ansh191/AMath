@@ -4,3 +4,4 @@ from .prime import *
 from .Basic import *
 from .relationship import *
 from .num_properties import *
+from .trig import *

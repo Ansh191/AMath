@@ -1,5 +1,6 @@
 from amath.DataTypes.Infinity import Infinity
 from amath.Errors import InterpretationError
+from amath.DataTypes.types import FunctionType
 
 
 def isinf(x):
@@ -45,7 +46,7 @@ def isnan(x):
 
 
 def intQ(x):
-    if type(x) == int:
+    if isinstance(x, int):
         return True
     else:
         return False
@@ -59,8 +60,29 @@ def isReal(x):
     return True
 
 
+def isWhole(x):
+    t = intQ(x)
+    if not t:
+        return False
+    if x < 0:
+        return False
+    return True
+
+
+def isNatural(x):
+    t = intQ(x)
+    if not t:
+        return False
+    if x <= 0:
+        return False
+    return True
+
+
 def interpreter(t, boolreturn=False):
+    # type: (type, bool) -> FunctionType
     import inspect
+    if not isinstance(boolreturn, bool):
+        raise TypeError("boolreturn must be a bool value")
     y = False
     if type(t) is not type:
         if not inspect.isclass(t):

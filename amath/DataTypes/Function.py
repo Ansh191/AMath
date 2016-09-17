@@ -1,5 +1,13 @@
+from amath.DataTypes import LambdaType
+
 class _Function(object):
     def __init__(self, variables, function):
+        # type: (dict, LambdaType) -> None
+        # type: (list, LambdaType) -> None
+        # type: (str, LambdaType) -> None
+        # type: (dict, str) -> None
+        # type: (list, str) -> None
+        # type: (str, str) -> None
         self.vars = {}
         if isinstance(variables, str):
             self.vars[variables] = "Real"
@@ -18,4 +26,19 @@ class _Function(object):
         else:
             raise TypeError("Invalid variable declaration")
 
+        if not isinstance(function, LambdaType):
+            for var, tp in self.vars:
+                if var not in function:
+                    self.vars.pop(var)
+                    continue
+
+                index = function.find(var)
+                if index == -1:
+                    self.vars.pop(vars)
+                    continue
+
+                function.replace(" ", "")
+
+                l = list(function)
+                index = l.index(var)
 

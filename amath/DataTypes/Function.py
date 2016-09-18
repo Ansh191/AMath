@@ -7,6 +7,7 @@ class _Function(object):
         # type: (list, str) -> None
         # type: (str, str) -> None
         self.vars = {}
+        self.function = function
         if isinstance(variables, str):
             self.vars[variables] = "Real"
         elif isinstance(variables, list):
@@ -53,6 +54,7 @@ class _Function(object):
         for var in self.vars:
             vl.append(var)
         v = ", ".join(vl)
+        self.v = v
         string = "def run(self, " + v + """):
                     self.check(""" + v + """)
                     return """ + function
@@ -87,6 +89,10 @@ class _Function(object):
                     raise TypeError("{0} must be a Natural number".format(var))
             else:
                 raise Exception("Internal Error")
+            i += 1
+
+    def __repr__(self):
+        return "f({0}) = {1}".format(self.v, self.function)
 
 
 Function = type("Function", (_Function, object), {})

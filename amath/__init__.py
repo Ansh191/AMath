@@ -7,10 +7,11 @@ AMath
 
 """
 try:
+    from .stats import *
     from .Errors import *
     from .DataTypes import *
     from .Computation import *
-    from amath.lists import *
+    from .lists import *
     from .string_proccessing import *
     from .testing import *
     from .constants import *

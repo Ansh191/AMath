@@ -81,6 +81,9 @@ def linregress(inp, output):
     if not isinstance(output, list):
         raise TypeError("Input must be a list")
 
+    if len(inp) != len(output):
+        raise TypeError("Lists must be of the same size")
+
     z = 0
     a = 0
     i = 0

@@ -216,7 +216,7 @@ def choose(l, f):
     return o
 
 
-def reorder(x, r = False):
+def reorder(x, r=False):
     # type: (list, bool) -> list
     """
     Reorders the list

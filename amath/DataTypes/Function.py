@@ -1,5 +1,6 @@
 from amath.DataTypes import LambdaType
 
+
 class _Function(object):
     def __init__(self, variables, function):
         # type: (dict, LambdaType) -> None
@@ -18,27 +19,47 @@ class _Function(object):
                 else:
                     self.vars[i] = "Real"
         elif isinstance(variables, dict):
-            for var, tp in variables:
+            for var in variables:
                 if not isinstance(var, str):
                     raise TypeError("Invalid variable")
-                if not (tp in ["Imaginary", "Real", "Irrational", "Rational", "Integer", "Whole", "Natural"]):
+                if not (self.vars[var] in ["Imaginary", "Real", "Irrational", "Rational",
+                                           "Integer", "Whole", "Natural"]):
                     raise TypeError("Invalid variable type")
         else:
             raise TypeError("Invalid variable declaration")
 
-        if not isinstance(function, LambdaType):
-            for var, tp in self.vars:
-                if var not in function:
-                    self.vars.pop(var)
-                    continue
+        for var in self.vars:
+            if var not in function:
+                self.vars.pop(var)
+                continue
 
-                index = function.find(var)
-                if index == -1:
-                    self.vars.pop(vars)
-                    continue
+            index = function.find(var)
+            if index == -1:
+                self.vars.pop(vars)
+                continue
 
-                function.replace(" ", "")
+            function.replace(" ", "")
 
-                l = list(function)
-                index = l.index(var)
+            before = function[index - 1]
+            con = False
+            try:
+                int(before)
+            except ValueError:
+                con = True
 
+            if not con:
+                function = function[:index] + "*" + function[index:]
+        _do = None
+        vl = []
+        for var in self.vars:
+            vl.append(var)
+        v = ", ".join(vl)
+        print(v)
+        string = "def _do(self, " + v + """):
+                    return """ + function
+        print(string)
+        exec string
+        setattr(Function, _do.__name__, _do)
+
+
+Function = type("Function", (_Function, object), {})

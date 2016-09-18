@@ -1,6 +1,5 @@
 from amath.DataTypes.Infinity import Infinity
 from amath.Errors import InterpretationError
-from amath.DataTypes.types import FunctionType
 
 
 def isinf(x):
@@ -57,6 +56,8 @@ def isReal(x):
         float(x)
     except ValueError:
         return False
+    except TypeError:
+        return False
     return True
 
 
@@ -76,6 +77,12 @@ def isNatural(x):
     if x <= 0:
         return False
     return True
+
+
+def isComplex(x):
+    if isinstance(x, complex):
+        return True
+    return False
 
 
 def interpreter(t, boolreturn=False):

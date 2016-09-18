@@ -6,14 +6,16 @@ AMath
 
 
 """
-
-from .Errors import *
-from .DataTypes import *
-from .Computation import *
-from amath.lists import *
-from .string_proccessing import *
-from .testing import *
-from .constants import *
+try:
+    from .Errors import *
+    from .DataTypes import *
+    from .Computation import *
+    from amath.lists import *
+    from .string_proccessing import *
+    from .testing import *
+    from .constants import *
+except:
+    raise
 
 # from .random import *
 

@@ -36,7 +36,7 @@ class _Real:
     def __mod__(self, other):
         return self.value % other
 
-    def __pow__(self, power, modulo = None):
+    def __pow__(self, power, modulo=None):
         return pow(self.value, power, modulo)
 
     def __cmp__(self, other):
@@ -58,5 +58,6 @@ class _Real:
                 return 0
             else:
                 return -1
+
 
 Real = type("Real", [_Real, object], {})

@@ -1,8 +1,14 @@
 from amath.constants import e, pi
+import _trig as t
 
 
 def sin(a):
-    return (e ** (1j * a)).imag
+    if a == pi:
+        return 0
+    try:
+        return t.sin(a)
+    except TypeError:
+        return (e ** (1j * a)).imag
 
 
 def cos(a):
@@ -11,13 +17,18 @@ def cos(a):
     :param a:
     :return:
     """
-    return (e ** (1j * a)).real
+    try:
+        return t.cos(a)
+    except TypeError:
+        return (e ** (1j * a)).real
 
 
 def tan(a):
     """Returns tan(a)"""
-    answer = (sin(a)) / cos(a)
-    return answer
+    try:
+        return t.tan(a)
+    except TypeError:
+        return (sin(a)) / cos(a)
 
 
 def cot(a):
@@ -37,28 +48,37 @@ def csc(a):
     return 1.00 / sin(a)
 
 
-def arcsin(a, error=0.00000000000000000001):
-    if a > 1 or a < -1:
-        raise ValueError("math domain error")
-
-    minimum = -(pi / 2.0)
-    maximum = pi / 2.0
-    x = (maximum + minimum) / 2.0
-    while True:
-        if sin(x) == a:
-            return x
-        if (a - error) < sin(x) < (a + error):
-            return x
-
-        if sin(x) < a:
-            minimum = x
-            x = (maximum + minimum) / 2.0
-        else:
-            maximum = x
-            x = (maximum + minimum) / 2.0
+def arcsin(a):
+    return t.asin(a)
 
 
-def arccos(a, error=0.00000000000000000001):
-    return (pi / 2.0) - arcsin(a, error)
+def arccos(a):
+    try:
+        return t.acos(a)
+    except TypeError:
+        return (pi / 2.0) - arcsin(a)
 
 
+def arctan(a):
+    return t.atan(a)
+
+
+def arccot(a):
+    try:
+        return t.acot(a)
+    except TypeError:
+        return arctan(1.0 / a)
+
+
+def arcsec(a):
+    try:
+        return t.asec(a)
+    except TypeError:
+        return arccos(1.0 / a)
+
+
+def arccsc(a):
+    try:
+        return t.acsc(a)
+    except TypeError:
+        return arcsin(1/a)

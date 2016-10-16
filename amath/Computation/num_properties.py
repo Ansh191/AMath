@@ -1,6 +1,7 @@
 def factors(x):
     """Returns factors of x"""
     f = []
+    from amath.lists.iter import range
     for i in range(1, x):
         if x % i == 0:
             f.append(i)

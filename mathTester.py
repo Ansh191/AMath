@@ -28,7 +28,6 @@ def test_abs3():
 def test_alltrue():
     assert m.alltrue([1, 3, 5], m.evenQ)
 
+
 def test_alltrue():
-    assert m.alltrue([2,4,6], m.evenQ)
-
-
+    assert m.alltrue([2, 4, 6], m.evenQ)

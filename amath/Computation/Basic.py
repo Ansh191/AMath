@@ -1,9 +1,14 @@
+import _basic as _b
+
+
 def sqrt(x):
+    # type: (complex) -> complex
+    # type: (float) -> float
+    # type: (int) -> float
     """Returns square root of X
     :param x:
-    :return:
+    :return: float
 
-    Returns a float
 
     >>> sqrt(16)
     4.0
@@ -24,18 +29,18 @@ def sqrt(x):
     >>> sqrt(5.5)
     2.345207879911715
     >>> from amath.DataTypes.Fraction import Fraction
-    >>> sqrt(Fraction(16,4))
-    2
+    >>> sqrt(Fraction(25,4))
+    5/2
     """
-    if type(x) is complex:
-        return x ** 0.5
     try:
-        x = float(x)
-    except:
+        ans = _b.sqrt(x)
+    except ValueError:
         raise TypeError("{0} is not a number".format(str(x)))
-    if x < 0:
+
+    if ans != ans:
         return sqrt(abs(x)) * 1j
-    return x ** 0.5
+    else:
+        return ans
 
 
 def d(*x):
@@ -112,9 +117,9 @@ def s(*x):
 
 # noinspection PyShadowingBuiltins
 def abs(x):
-    # type: (complex) -> float
     # type: (int) -> float
     # type: (float) -> float
+    # type: (complex) -> float
     """
     Returns the absolute value of a float
     :param x: float, int, complex
@@ -136,20 +141,17 @@ def abs(x):
     >>> abs(-532j)
     532.0
     """
-    if type(x) is complex:
-        return sqrt(pow(x.real, 2) + pow(x.imag, 2))
     try:
-        x = float(x)
-    except:
-        raise TypeError("{0} is not a number".format(str(x)))
-    if x > 0:
-        return x
-    else:
-        return -x
+        return _b.abs(x)
+    except AttributeError:
+        try:
+            return x.__abs__()
+        except AttributeError:
+            raise TypeError("{0} is not a number".format(str(x)))
 
 
 def fac(x):
-    # type: (int) -> int
+    # type: (float) -> float
     """
     Finds x factorial
     :param x: integer
@@ -160,11 +162,20 @@ def fac(x):
     >>> fac(5)
     120
     """
-    if type(x) is not int:
-        raise TypeError("A integer is required")
+    from amath.constants import Cinf
     if x == 0:
-        return 1
+        return 1.0
     elif x < 0:
-        raise TypeError("Not for negative values")
+        return Cinf
     else:
-        return x * fac(x - 1)
+        return x * gamma(x)
+
+
+# TODO-Allow gamma to accept complex numbers
+def gamma(x):
+    # type: (float) -> float
+    return _b.gamma(x)
+
+
+def N():
+    pass

@@ -1,4 +1,3 @@
-from amath.DataTypes.Infinity import Infinity
 from amath.Errors import InterpretationError
 
 
@@ -20,6 +19,7 @@ def isinf(x):
     >>> isinf(5)
     False
     """
+    from amath.DataTypes.Infinity import Infinity
     if isinstance(x, Infinity):
         return True
     elif x == float("inf"):
@@ -45,9 +45,16 @@ def isnan(x):
 
 
 def intQ(x):
+    import sys
     if isinstance(x, int):
+        del sys
         return True
     else:
+        if sys.version_info[0] == 2:
+            if isinstance(x, long):
+                del sys
+                return True
+        del sys
         return False
 
 
@@ -83,6 +90,16 @@ def isComplex(x):
     if isinstance(x, complex):
         return True
     return False
+
+
+def isNumber(x):
+    try:
+        x = complex(x)
+        return True
+    except TypeError:
+        return False
+    except ValueError:
+        return False
 
 
 def interpreter(t, boolreturn=False):

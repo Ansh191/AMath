@@ -1,5 +1,62 @@
 from amath.Errors import TimeoutException, IDEError
-from amath.testing.number import primeQ
+
+
+def primeQ(x):
+    """
+    Checks if X is prime
+    :param x: suspected prime
+    :return: boolean
+
+    >>> primeQ(5)
+    True
+    >>> primeQ(2)
+    True
+    >>> primeQ(1)
+    False
+    >>> primeQ(-5)
+    False
+    >>> primeQ(20)
+    False
+    >>> primeQ(5.5)
+    Traceback (most recent call last):
+    TypeError: 5.5 is not an integer
+    """
+    if type(x) is not int:
+        raise TypeError(str(x) + " is not an integer")
+    if x > 1:
+        if int(x) == x:
+            for i in range(2, x):
+                if (x % i) == 0:
+                    return False
+            return True
+    return False
+
+
+
+def compositeQ(x):
+    """
+    Tests if X is compisite
+    :param x:
+    :return: boolean
+
+    >>> compositeQ(5)
+    False
+    >>> compositeQ(2.5)
+    False
+    >>> compositeQ(6)
+    True
+    >>> compositeQ(0)
+    False
+    >>> compositeQ(-2)
+    False
+    """
+    if type(x) is int:
+        if x > 0:
+            if not primeQ(x):
+                return True
+            else:
+                return False
+    return False
 
 
 def prime(n):
@@ -68,7 +125,5 @@ def nextprime(n):
         f += 1
     return f
 
-
-#def primeFactorize(n):
+# def primeFactorize(n):
 #    if
-

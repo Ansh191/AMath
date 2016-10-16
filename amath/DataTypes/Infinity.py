@@ -56,5 +56,4 @@ class _Infinity:
             return None
 
 
-
 Infinity = type("Infinity", (_Infinity, object), {})

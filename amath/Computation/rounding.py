@@ -1,6 +1,3 @@
-from amath.testing import evenQ
-
-
 def ceil(x):
     """
     Returns the ceiling of a number
@@ -70,7 +67,7 @@ def trunc(x):
     return y
 
 
-def fround(x):
+def fround(x, m):
     """
     rounds X to nearest integer
     :param x:
@@ -90,17 +87,23 @@ def fround(x):
     >>> fround(4.5)
     4
     """
-    try:
-        intx = int(floor(x))
-        decx = x - intx
+    b = 10**(-m)
+
+    def f(v):
+        intx = int(floor(v))
+        decx = v - intx
         if decx < 0.5:
             return intx
         elif decx > 0.5:
             return intx + 1
         elif decx == 0.5:
-            if evenQ(intx + 1):
+            if (intx + 1) % 2 == 0:
                 return intx + 1
             else:
                 return intx
+
+    try:
+        return f(float(x) / float(b)) * float(b)
     except ValueError:
         raise TypeError("A float or integer is required")
+

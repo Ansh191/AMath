@@ -14,9 +14,10 @@ def exp(x):
 
 
 # noinspection PyShadowingBuiltins
-def pow(x, y):
+def pow(x, y, m=None):
     """
     X to the Y power
+    :param m:
     :param x:
     :param y:
     :return:
@@ -27,8 +28,13 @@ def pow(x, y):
     0.2
     >>> pow(25,0.5)
     5.0
+    >>> pow(5, 2, 4)
+    1
     """
-    return x ** y
+    try:
+        return x.__pow__(y, m)
+    except TypeError:
+        raise TypeError("{0}{1} cannot be raised to the {2}{3} power".format(type(x), x, type(y), y))
 
 
 def root(x, y):
@@ -83,7 +89,7 @@ def ln(z, error=0.000001):
     y = e ** x
     minimum = 0
     maximum = 0
-    Begin = True
+    begin = True
     while True:
         if y == z:
             return x
@@ -92,27 +98,27 @@ def ln(z, error=0.000001):
 
         if z > 1:
             if y < z:
-                if Begin is True:
+                if begin is True:
                     minimum = x
                     x += 1
                 else:
                     minimum = x
                     x = (minimum + maximum) / 2.0
             elif y > z:
-                Begin = False
+                begin = False
                 maximum = x
                 x = (minimum + maximum) / 2.0
 
         else:
             if y > z:
-                if Begin is True:
+                if begin is True:
                     maximum = x
                     x -= 1
                 else:
                     maximum = x
                     x = (minimum + maximum) / 2.0
             elif y < z:
-                Begin = False
+                begin = False
                 minimum = x
                 x = (minimum + maximum) / 2.0
 

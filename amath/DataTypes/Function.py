@@ -1,7 +1,9 @@
-from amath.testing.types import isReal, isComplex, isNatural, isWhole, intQ
+from __future__ import print_function
 
 
 class _Function(object):
+    __slots__ = ('run', '__call__', 'vars', 'function', 'v')
+
     def __init__(self, variables, function):
         # type: (dict, str) -> None
         # type: (list, str) -> None
@@ -9,19 +11,20 @@ class _Function(object):
         self.vars = {}
         self.function = function
         if isinstance(variables, str):
-            self.vars[variables] = "Real"
+            self.vars[variables] = "Number"
         elif isinstance(variables, list):
             for i in variables:
                 if not isinstance(i, str):
                     raise TypeError("Invalid variable")
                 else:
-                    self.vars[i] = "Real"
+                    self.vars[i] = "Number"
         elif isinstance(variables, dict):
             for var in variables:
                 if not isinstance(var, str):
                     raise TypeError("Invalid variable")
-                if not (self.vars[var] in ["Imaginary", "Real", "Integer", "Whole", "Natural"]):
+                if not (variables[var] in ["Number", "Imaginary", "Real", "Integer", "Whole", "Natural"]):
                     raise TypeError("Invalid variable type")
+                self.vars = variables
         else:
             raise TypeError("Invalid variable declaration")
 
@@ -30,24 +33,47 @@ class _Function(object):
                 self.vars.pop(var)
                 continue
 
-            index = function.find(var)
-            if index == -1:
-                self.vars.pop(vars)
-                continue
-
             function.replace(" ", "")
 
-            before = function[index - 1]
-            con = False
-            if index - 1 == -1:
-                con = True
-            try:
-                int(before)
-            except ValueError:
-                con = True
+            times = function.count(var)
+            if times == 0:
+                self.vars.pop(var)
+                continue
+            i = 0
+            while i < times:
+                index = function.find(var, function.find(var) + i)
+                before = function[index - 1]
+                con = False
+                if index - 1 == -1:
+                    con = True
+                try:
+                    int(before)
+                except ValueError:
+                    con = True
 
-            if not con:
-                function = function[:index] + "*" + function[index:]
+                if not con:
+                    function = function[:index] + "*" + function[index:]
+                i += 1
+
+            times = function.count('(')
+            if times == 0:
+                continue
+            i = 0
+            while i < times:
+                index = function.find('(', function.find('(') + i)
+                before = function[index - 1]
+                con = False
+                if index - 1 == -1:
+                    con = True
+                try:
+                    int(before)
+                except ValueError:
+                    con = True
+
+                if not con:
+                    function = function[:index] + "*" + function[index:]
+                i += 1
+
         run = None
         __call__ = None
         vl = []
@@ -55,7 +81,10 @@ class _Function(object):
             vl.append(var)
         v = ", ".join(vl)
         self.v = v
+        from amath import __all__
+        c = (str(__all__)[1:-1]).replace("'", "")
         string = "def run(self, " + v + """):
+                    from amath import """ + c + """
                     self.check(""" + v + """)
                     return """ + function
         string2 = "def __call__(self, " + v + """):
@@ -66,13 +95,17 @@ class _Function(object):
         setattr(Function, __call__.__name__, __call__)
 
     def check(self, *args):
+        from amath.testing.types import isReal, isComplex, isNatural, isWhole, intQ, isNumber
         if len(args) != len(self.vars):
             raise TypeError("check takes exactly {0} arguments ({1} given)".format(len(self.vars), len(args)))
         i = 0
         for var in self.vars:
             tp = self.vars[var]
             value = args[i]
-            if tp == "Imaginary":
+            if tp == "Number":
+                if not isNumber(value):
+                    raise TypeError("{0} must be a number".format(var))
+            elif tp == "Imaginary":
                 if not isComplex(value):
                     raise TypeError("{0} must be an Imaginary number".format(var))
             elif tp == "Real":

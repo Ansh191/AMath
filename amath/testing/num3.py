@@ -1,6 +1,3 @@
-from amath.Computation.relationship import gcd
-from amath.Computation.num_properties import factors
-from amath.Computation.Basic import sqrt
 from amath.Computation.power import root
 
 
@@ -144,6 +141,7 @@ def coprime(x, y):
     >>> coprime(-5, -2)
     True
     """
+    from amath.Computation.relationship import gcd
     if gcd(x, y) == 1:
         return True
     else:
@@ -152,6 +150,7 @@ def coprime(x, y):
 
 def perfect(x):
     """Checks if x is a perfect number"""
+    from amath.Computation.num_properties import factors
     fac = factors(x)
     y = 0
     for i in fac:
@@ -165,8 +164,8 @@ def perfect(x):
 
 def square(x):
     """checks if x is a square number"""
-    sq = sqrt(x)
-    if float.is_integer(sq):
+    sq = root(x, 2)
+    if sq.is_integer():
         return True
     else:
         return False

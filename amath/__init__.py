@@ -7,18 +7,18 @@ AMath
 
 """
 try:
-    from .stats import *
-    from .Errors import *
-    from .DataTypes import *
     from .Computation import *
-    from .lists import *
-    from .string_proccessing import *
+    from .Errors import *
     from .testing import *
+    from .lists import *
+    from .random import *
+    from .stats import *
+    from .string_proccessing import *
+    from .DataTypes import *
     from .constants import *
-except:
-    raise
+    from .system import *
+except BaseException as e:
+    raise  # ImportError("Failure during Import: {0}".format(e.message))
 
 # from .random import *
-
-
 __all__ = list(n for n in dir() if n[:1] != '_')

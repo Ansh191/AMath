@@ -3,7 +3,8 @@ PYTHON 3
 Define names for built-in types that aren't directly accessible as a builtin.
 """
 import sys
-
+import functools as _functools
+import collections.abc as _collections_abc
 
 # Iterators in Python aren't a matter of type but of protocol.  A large
 # and changing number of builtin types implement *some* flavor of
@@ -54,7 +55,7 @@ except TypeError:
     tb = sys.exc_info()[2]
     TracebackType = type(tb)
     FrameType = type(tb.tb_frame)
-    tb = None;
+    tb = None
     del tb
 
 # For Jython, the following two types are identical
@@ -65,7 +66,7 @@ del sys, _f, _g, _C, _c,  # Not for export
 
 
 # Provide a PEP 3115 compliant mechanism for class creation
-def new_class(name, bases = (), kwds = None, exec_body = None):
+def new_class(name, bases=(), kwds=None, exec_body=None):
     """Create a class object dynamically using the appropriate metaclass."""
     meta, ns, kwds = prepare_class(name, bases, kwds)
     if exec_body is not None:
@@ -73,7 +74,7 @@ def new_class(name, bases = (), kwds = None, exec_body = None):
     return meta(name, bases, ns, **kwds)
 
 
-def prepare_class(name, bases = (), kwds = None):
+def prepare_class(name, bases=(), kwds=None):
     """Call the __prepare__ method of the appropriate metaclass.
 
     Returns (metaclass, namespace, kwds) as a 3-tuple
@@ -137,7 +138,7 @@ class DynamicClassAttribute:
 
     """
 
-    def __init__(self, fget = None, fset = None, fdel = None, doc = None):
+    def __init__(self, fget=None, fset=None, fdel=None, doc=None):
         self.fget = fget
         self.fset = fset
         self.fdel = fdel
@@ -147,7 +148,7 @@ class DynamicClassAttribute:
         # support for abstract methods
         self.__isabstractmethod__ = bool(getattr(fget, '__isabstractmethod__', False))
 
-    def __get__(self, instance, ownerclass = None):
+    def __get__(self, instance, ownerclass=None):
         if instance is None:
             if self.__isabstractmethod__:
                 return self
@@ -183,8 +184,7 @@ class DynamicClassAttribute:
         return result
 
 
-import functools as _functools
-import collections.abc as _collections_abc
+
 
 
 class _GeneratorWrapper:
@@ -243,7 +243,7 @@ def coroutine(func):
         raise TypeError('types.coroutine() expects a callable')
 
     if (func.__class__ is FunctionType and
-                getattr(func, '__code__', None).__class__ is CodeType):
+            getattr(func, '__code__', None).__class__ is CodeType):
 
         co_flags = func.__code__.co_flags
 
@@ -275,7 +275,7 @@ def coroutine(func):
     def wrapped(*args, **kwargs):
         coro = func(*args, **kwargs)
         if (coro.__class__ is CoroutineType or
-                        coro.__class__ is GeneratorType and coro.gi_code.co_flags & 0x100):
+                    coro.__class__ is GeneratorType and coro.gi_code.co_flags & 0x100):
             # 'coro' is a native coroutine object or an iterable coroutine
             return coro
         if (isinstance(coro, _collections_abc.Generator) and

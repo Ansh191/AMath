@@ -5,4 +5,5 @@ from .prime import *
 from .relationship import *
 from .rounding import *
 from .trig import *
+from .permutations import *
 

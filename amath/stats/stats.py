@@ -1,9 +1,9 @@
-from amath.DataTypes import Fraction, Function
 from amath.constants import inf
 from .mean import mean
 
 
 def slope(x1, y1, x2, y2):
+    from amath.DataTypes.Fraction import Fraction
     dx = x1 - x2
     dy = y1 - y2
     if dx == 0:
@@ -11,13 +11,13 @@ def slope(x1, y1, x2, y2):
     return Fraction(dy, dx)
 
 
-def Sum(f, i=None, maximum=None, step=1, l=None):
+def sum(f, i=None, maximum=None, step=1, l=None):
     try:
         if type(f(2)) != float:
             if type(f(2)) != int:
                 raise ValueError("Function must return float or integer value")
     except TypeError:
-        raise TypeError("f must be a function")
+        raise TypeError("f must be a function with only one argument")
 
     if i is not None:
         if maximum is not None:
@@ -41,7 +41,7 @@ def Sum(f, i=None, maximum=None, step=1, l=None):
         return x
 
 
-def Product(f, i=None, maximum=None, step=1, l=None):
+def product(f, i=None, maximum=None, step=1, l=None):
     try:
         if type(f(2)) != float:
             if type(f(2)) != int:
@@ -53,29 +53,32 @@ def Product(f, i=None, maximum=None, step=1, l=None):
         if maximum is not None:
             if l is not None:
                 raise TypeError("Invalid Argument")
-            else:
-                raise TypeError("Invalid Argument")
     if i is None:
         if maximum is None:
             if l is None:
                 raise TypeError("Invalid Argument")
-            else:
-                raise TypeError("Invalid Argument")
 
     if l is None:
-        x = 0
+        x = 1
+        before = 0.0
         while i <= maximum:
-            x *= f(i)
+            r = f(i)
+            x *= r
             i += step
+            if before == r:
+                break
+            else:
+                before = r
         return x
     elif i is not None:
-        x = 0
+        x = 1
         for y in l:
             x *= f(y)
         return x
 
 
 def linregress(inp, output):
+    from amath.DataTypes.Function import Function
     if not isinstance(inp, list):
         raise TypeError("Input must be a list")
     if not isinstance(output, list):
@@ -84,6 +87,8 @@ def linregress(inp, output):
     if len(inp) != len(output):
         raise TypeError("Lists must be of the same size")
 
+    if inp == output:
+        return Function("x", "1.0x + 0.0")
     z = 0
     a = 0
     i = 0
@@ -94,10 +99,45 @@ def linregress(inp, output):
         i += 1
 
     for item in inp:
-        a += (item - xm)**2
+        a += (item - xm) ** 2
 
-    m = z/a
+    m = z / a
 
     b = ym - (m * xm)
 
     return Function("x", "{0}x + {1}".format(m, b))
+
+
+def isPro(x, y):
+    if type(x) != list:
+        raise TypeError("x must be a list")
+    if type(y) != list:
+        raise TypeError("y must be a list")
+    if len(x) < 2:
+        raise ValueError("length of lists must be greater than 1")
+    if len(x) != len(y):
+        raise TypeError("length of lists must be same")
+
+    s = 0
+    f = False
+
+    for i in range(len(x)):
+        n = x[i]
+        n2 = y[i]
+        if n == 0:
+            if n2 == 0:
+                continue
+            else:
+                return False
+        else:
+            if n2 == 0:
+                return False
+
+        cs = float(n2) / n
+        if not f:
+            s = cs
+            f = True
+
+        if cs != s:
+            return False
+    return True

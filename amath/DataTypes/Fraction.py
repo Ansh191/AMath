@@ -113,7 +113,7 @@ class _fraction:
         """
         return self.__truediv__(other)
 
-    def __pow__(self, power, modulo = None):
+    def __pow__(self, power, modulo=None):
         y = pow(self.numerator, power)
         z = pow(self.denominator, power)
         if modulo is not None:
@@ -245,7 +245,7 @@ class _fraction:
 Fraction = type("Fraction", (_fraction, object), {})
 
 
-def dectofr(x, error = 0.00000001):
+def dectofr(x, error=0.00000001):
     """
     Converts decimals to fractions
     :param x: decimal to convert

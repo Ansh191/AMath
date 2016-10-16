@@ -2,12 +2,11 @@ from .Fraction import *
 from .Infinity import *
 from .DateObject import *
 from .Function import *
+from .Array import *
+from .table import *
 
-import sys
 
-if sys.version_info[0] < 3:
-    from .types import *
-else:
+try:
     from .types3 import *
-
-del sys
+except SyntaxError:
+    from .types import *

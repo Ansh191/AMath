@@ -2178,7 +2178,7 @@ def comb(n, r):
     return int(float(fac(n)) / (fac(r) * fac(n - r)))
 
 
-def perm(n, k):
+def permutation(n, k):
     if k > n:
         return 0
     return float(fac(n)) / fac(n - k)

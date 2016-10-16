@@ -1,5 +1,4 @@
 from __future__ import print_function
-from amath.testing import primeQ
 
 
 def reverse(l):
@@ -60,7 +59,7 @@ def delcases(l, f):
     :param l:
     :param f:
     :return:
-
+    >>> from amath.Computation.prime import primeQ
     >>> delcases([1,2,3,4,5], primeQ)
     [1, 4]
     """
@@ -90,6 +89,7 @@ def cases(l, f):
     :param f:
     :return:
 
+    >>> from amath.Computation.prime import primeQ
     >>> cases([2,3,4], primeQ)
     [4]
     >>> cases([4,6,8], primeQ)
@@ -140,6 +140,7 @@ def anytrue(l, f):
     :param f: function that returns a boolean
     :return:
 
+    >>> from amath.Computation.prime import primeQ
     >>> anytrue([1,4,6,9], primeQ)
     False
     >>> anytrue([1,4,6,13], primeQ)
@@ -168,6 +169,7 @@ def alltrue(l, f):
     :param f: function that returns a boolean value
     :return: boolean
 
+    >>> from amath.Computation.prime import primeQ
     >>> alltrue([2,3,5], primeQ)
     True
     >>> alltrue([2,3,4], primeQ)
@@ -196,6 +198,7 @@ def choose(l, f):
     :param f:
     :return:
 
+    >>> from amath.Computation.prime import primeQ
     >>> choose([1,2,3], primeQ)
     [2, 3]
     """

@@ -4,9 +4,6 @@ from .DateObject import *
 from .Function import *
 from .Array import *
 from .table import *
+from .Variable import *
 
-
-try:
-    from .types3 import *
-except SyntaxError:
-    from .types import *
+from .types import *

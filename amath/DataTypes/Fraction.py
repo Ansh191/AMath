@@ -3,7 +3,7 @@ from amath.Computation.relationship import gcd
 from amath.Computation.num_properties import digits
 
 
-class _fraction:
+class _fraction(object):
     """
     Fraction Class. Used to create a data type
     """
@@ -27,8 +27,6 @@ class _fraction:
         >>> Fraction(4,10)
         2/5
         """
-        self.onum = n
-        self.oden = d
         self.numerator = n / gcd(abs(n), abs(d))
         self.denominator = d / gcd(abs(n), abs(d))
         self.whole = 0
@@ -65,6 +63,15 @@ class _fraction:
         return Fraction(self.numerator * ax.denominator + self.denominator * ax.numerator,
                         self.denominator * ax.denominator)
 
+    def __radd__(self, other):
+        try:
+            other = float(other)
+        except ValueError:
+            raise NotImplemented
+        ax = dectofr(other)
+        return Fraction(self.numerator * ax.denominator + self.denominator * ax.numerator,
+                        self.denominator * ax.denominator)
+
     def __sub__(self, other):
         dx = other
         if type(other) is float:
@@ -85,9 +92,35 @@ class _fraction:
         >>> Fraction(1,3) * 2.5
         5/6
         """
-        mx = other
-        if type(other) is float:
-            mx = dectofr(other)
+        try:
+            other = float(other)
+        except ValueError:
+            return NotImplemented
+        except TypeError:
+            return NotImplemented
+        mx = dectofr(other)
+        return Fraction(self.numerator * mx.numerator, self.denominator * mx.denominator)
+
+    def __rmul__(self, other):
+        """
+        Multiplication
+        :param other:
+        :return:
+
+        >>> Fraction(1,2) * Fraction(5,4)
+        5/8
+        >>> 4 * Fraction(1,2)
+        2
+        >>> 2.5 * Fraction(1,3)
+        5/6
+        """
+        try:
+            other = float(other)
+        except ValueError:
+            return NotImplemented
+        except TypeError:
+            return NotImplemented
+        mx = dectofr(other)
         return Fraction(self.numerator * mx.numerator, self.denominator * mx.denominator)
 
     def __truediv__(self, other):
@@ -241,11 +274,20 @@ class _fraction:
     def __pos__(self):
         return Fraction(self.numerator, self.denominator)
 
+    def __coerce__(self, other):
+        try:
+            other = float(other)
+        except:
+            return NotImplemented
+        x = dectofr(other)
+        return self, x
 
-Fraction = type("Fraction", (_fraction, object), {})
+
+Fraction = type("Fraction", (_fraction, object), {}) # Generate our type
 
 
 def dectofr(x, error=0.00000001):
+    # type: (float, float) -> Fraction
     """
     Converts decimals to fractions
     :param x: decimal to convert

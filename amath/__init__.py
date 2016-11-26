@@ -11,7 +11,7 @@ try:
     from .Errors import *
     from .testing import *
     from .lists import *
-    from .random import *
+    # from .random import *
     from .stats import *
     from .string_proccessing import *
     from .DataTypes import *
@@ -21,4 +21,8 @@ except BaseException as e:
     raise  # ImportError("Failure during Import: {0}".format(e.message))
 
 # from .random import *
+__all__ = list(n for n in dir() if n[:1] != '_')
+
+from .formulas import *
+
 __all__ = list(n for n in dir() if n[:1] != '_')

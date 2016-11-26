@@ -1,7 +1,12 @@
 from __future__ import print_function
+import os as _os
 
-with open("C:\\Users\\ansg1\\PycharmProjects\\AMath\\amath\\string_proccessing\\words2.txt") as word_list:
+dir_path = _os.path.dirname(_os.path.realpath(__file__))
+with open(dir_path + _os.sep + 'words.txt') as word_list:
     eng_words = set(word.strip().lower() for word in word_list)
+
+del dir_path
+del _os
 
 ascii = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
          "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D",
@@ -15,6 +20,7 @@ letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n",
            "T", "U", "V", "W", "X", "Y", "Z"]
 chars = ["`", "-", "=", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(",
          ")", "[", "]", "\\", ";", "'", ", ", ".", "/", "_", "+", "{", "}", "|", ":", "\"", " < ", ">", "?"]
+numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
 
 ascii_table = {0: "\x00", 1: "\x01", 2: "\x02", 3: "\x03", 4: "\x04", 5: "\x05", 6: "\x06", 7: "\x07", 8: "\x08",
                9: "\x09",

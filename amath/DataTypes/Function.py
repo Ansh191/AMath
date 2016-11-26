@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import print_function, division
 
 
 class _Function(object):
@@ -11,18 +11,18 @@ class _Function(object):
         self.vars = {}
         self.function = function
         if isinstance(variables, str):
-            self.vars[variables] = "Number"
+            self.vars[variables] = "Value"
         elif isinstance(variables, list):
             for i in variables:
                 if not isinstance(i, str):
                     raise TypeError("Invalid variable")
                 else:
-                    self.vars[i] = "Number"
+                    self.vars[i] = "Value"
         elif isinstance(variables, dict):
             for var in variables:
                 if not isinstance(var, str):
                     raise TypeError("Invalid variable")
-                if not (variables[var] in ["Number", "Imaginary", "Real", "Integer", "Whole", "Natural"]):
+                if not (variables[var] in ["Value", "Number", "Imaginary", "Real", "Integer", "Whole", "Natural"]):
                     raise TypeError("Invalid variable type")
                 self.vars = variables
         else:
@@ -95,14 +95,17 @@ class _Function(object):
         setattr(Function, __call__.__name__, __call__)
 
     def check(self, *args):
-        from amath.testing.types import isReal, isComplex, isNatural, isWhole, intQ, isNumber
+        from amath.testing.types import isReal, isComplex, isNatural, isWhole, intQ, isNumber, isValue
         if len(args) != len(self.vars):
             raise TypeError("check takes exactly {0} arguments ({1} given)".format(len(self.vars), len(args)))
         i = 0
         for var in self.vars:
             tp = self.vars[var]
             value = args[i]
-            if tp == "Number":
+            if tp == "Value":
+                if not isValue(value):
+                    raise TypeError("{0} must be a value".format(var))
+            elif tp == "Number":
                 if not isNumber(value):
                     raise TypeError("{0} must be a number".format(var))
             elif tp == "Imaginary":

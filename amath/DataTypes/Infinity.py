@@ -55,5 +55,38 @@ class _Infinity:
         except AttributeError:
             return None
 
+    def __neg__(self):
+        if self.n:
+            return Infinity(False)
+        elif self.n == False:
+            return Infinity(True)
+        else:
+            return Infinity(None)
+
+    def __mul__(self, other):
+        if isinstance(other, Infinity):
+            if self.n is None:
+                return Infinity(None)
+            elif other.n is None:
+                return Infinity(None)
+            elif self.n == True:
+                if other.n == True:
+                    return Infinity(True)
+                else:
+                    return Infinity(False)
+            elif self.n == False:
+                if other.n == True:
+                    return Infinity(False)
+                else:
+                    return Infinity(True)
+        else:
+            if isinstance(other, complex):
+                if other.imag < 0:
+                    return self.__neg__()
+                elif other.imag > 0:
+                    return Infinity(self.n)
+                else:
+                    return Infinity(self.n)
+
 
 Infinity = type("Infinity", (_Infinity, object), {})

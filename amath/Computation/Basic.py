@@ -1,11 +1,12 @@
 import _basic as _b
-
+# from _basic import log, ln, log2, log10
 
 def sqrt(x):
-    # type: (complex) -> complex
-    # type: (float) -> float
     # type: (int) -> float
+    # type: (float) -> float
+    # type: (complex) -> complex
     """Returns square root of X
+    :type x: object
     :param x:
     :return: float
 
@@ -33,92 +34,23 @@ def sqrt(x):
     5/2
     """
     try:
-        ans = _b.sqrt(x)
+        return _b.sqrt(x)  # call the c-api
+    except TypeError:
+        raise TypeError("{0} is not a number".format(str(x)))  # if it failed, x is not a number
     except ValueError:
-        raise TypeError("{0} is not a number".format(str(x)))
-
-    if ans != ans:
-        return sqrt(abs(x)) * 1j
-    else:
-        return ans
-
-
-def d(*x):
-    """
-    Division
-    :param x:
-    :return:
-
-    >>> d(10,2)
-    5.0
-    >>> d(10,2,5)
-    1.0
-    """
-    z = []
-    for i in x:
-        z.append(i)
-    y = z[0]
-    z.remove(y)
-    for i in z:
-        y /= float(i)
-    return y
-
-
-def a(*x):
-    """
-    addition
-    ========
-    :param x: tuple
-    :return:
-
-    >>> a(5,2)
-    7
-    >>> a(2,-3)
-    -1
-
-    Multiple numbers can be inputed as well
-
-    >>> a(2,5,3)
-    10
-    >>> a(-2,-3,2)
-    -3
-    """
-    z = []
-    for i in x:
-        z.append(i)
-    y = z[0]
-    z.remove(y)
-    for i in z:
-        y += i
-    return y
-
-
-def m(*x):
-    z = []
-    for i in x:
-        z.append(i)
-    y = z[0]
-    z.remove(y)
-    for i in z:
-        y *= i
-    return y
-
-
-def s(*x):
-    z = []
-    for i in x:
-        z.append(i)
-    y = z[0]
-    z.remove(y)
-    for i in z:
-        y -= i
-    return y
+        return sqrt(abs(x)) * 1j  # x is negative
+    except:  # in case of _basic failure
+        if isinstance(x, complex):
+            return x ** 0.5
+        if x < 0:
+            return sqrt(abs(x)) * 1j
+        return x ** 0.5
 
 
 # noinspection PyShadowingBuiltins
 def abs(x):
-    # type: (int) -> float
     # type: (float) -> float
+    # type: (int) -> float
     # type: (complex) -> float
     """
     Returns the absolute value of a float
@@ -142,14 +74,15 @@ def abs(x):
     532.0
     """
     try:
-        return _b.abs(x)
-    except AttributeError:
+        return _b.abs(x)  # call c-api
+    except:
         try:
-            return x.__abs__()
+            return x.__abs__()  # if c-api fails, run __abs__ function
         except AttributeError:
-            raise TypeError("{0} is not a number".format(str(x)))
+            raise TypeError("{0} is not a number".format(str(x)))  # x is then not a valid number
 
 
+# TODO-Look at gamma
 def fac(x):
     # type: (float) -> float
     """
@@ -172,10 +105,28 @@ def fac(x):
 
 
 # TODO-Allow gamma to accept complex numbers
+# TODO-Allow gamma to take larger numbers
 def gamma(x):
     # type: (float) -> float
-    return _b.gamma(x)
+    t = False
+    y = 0.0
+    try:
+        y = _b.gamma(x)  # call c-api
+    except:
+        t = True
+    from amath.stats.stats import product
+    from amath.DataTypes.Function import Function
+    if x >= 170 or t:  # to not overflow float or if in _basic failure
+        if isinstance(x, int) or isinstance(x, long):  # x must be an int
+            return product(Function("k", "k"), 1, x) / x
+        else:
+            raise TypeError("For values over 170, x must be a integer")
+    else:
+        if isinstance(x, int) or isinstance(x, long) or int(x) == x:
+            return int(y)
+        else:
+            return y
 
 
 def N():
-    pass
+    return NotImplemented

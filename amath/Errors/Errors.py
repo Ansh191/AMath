@@ -44,3 +44,4 @@ class Indeterminate(Exception):
     """
     The could not be determined
     """
+    pass

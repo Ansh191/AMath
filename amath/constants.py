@@ -14,3 +14,4 @@ inf = infinity = Infinity(True)  # Infinity
 Ninf = negativeInfinity = Infinity(False)  # Negative Infinity
 Cinf = ComplexInfinity = Infinity(None)  # Complex Infinity
 nan = float("nan")  # NaN
+c = 299792458

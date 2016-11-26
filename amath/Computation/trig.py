@@ -1,12 +1,12 @@
 from amath.constants import e, pi
-import _trig as t
+import _trig as _t
 
 
 def sin(a):
     if a == pi:
         return 0
     try:
-        return t.sin(a)
+        return _t.sin(a)
     except TypeError:
         return (e ** (1j * a)).imag
 
@@ -18,7 +18,7 @@ def cos(a):
     :return:
     """
     try:
-        return t.cos(a)
+        return _t.cos(a)
     except TypeError:
         return (e ** (1j * a)).real
 
@@ -26,7 +26,7 @@ def cos(a):
 def tan(a):
     """Returns tan(a)"""
     try:
-        return t.tan(a)
+        return _t.tan(a)
     except TypeError:
         return (sin(a)) / cos(a)
 
@@ -49,36 +49,36 @@ def csc(a):
 
 
 def arcsin(a):
-    return t.asin(a)
+    return _t.asin(a)
 
 
 def arccos(a):
     try:
-        return t.acos(a)
+        return _t.acos(a)
     except TypeError:
         return (pi / 2.0) - arcsin(a)
 
 
 def arctan(a):
-    return t.atan(a)
+    return _t.atan(a)
 
 
 def arccot(a):
     try:
-        return t.acot(a)
+        return _t.acot(a)
     except TypeError:
         return arctan(1.0 / a)
 
 
 def arcsec(a):
     try:
-        return t.asec(a)
+        return _t.asec(a)
     except TypeError:
         return arccos(1.0 / a)
 
 
 def arccsc(a):
     try:
-        return t.acsc(a)
+        return _t.acsc(a)
     except TypeError:
         return arcsin(1/a)

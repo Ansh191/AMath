@@ -78,6 +78,7 @@ def product(f, i=None, maximum=None, step=1, l=None):
 
 
 def linregress(inp, output):
+    # type: (list, list) -> Function
     from amath.DataTypes.Function import Function
     if not isinstance(inp, list):
         raise TypeError("Input must be a list")
@@ -88,12 +89,13 @@ def linregress(inp, output):
         raise TypeError("Lists must be of the same size")
 
     if inp == output:
-        return Function("x", "1.0x + 0.0")
+        return Function("x", "1.0x + 0.0")  # if list is same
+    # set Defaults
     z = 0
     a = 0
     i = 0
-    xm = mean(inp)
-    ym = mean(output)
+    xm = mean(inp)  # mean of input
+    ym = mean(output)  # mean of output
     for item in inp:
         z += (item - xm) * (output[i] - ym)
         i += 1
@@ -106,6 +108,21 @@ def linregress(inp, output):
     b = ym - (m * xm)
 
     return Function("x", "{0}x + {1}".format(m, b))
+
+
+def expregress(inp, output):
+    from amath.lists.lists import applylist, anytrue
+    from amath.Computation.power import log10
+    from amath.testing.types import isnan, isinf
+    from amath.DataTypes.Function import Function
+    logoutput = applylist(output, log10)
+    if anytrue(logoutput, isnan) or anytrue(logoutput, isinf):
+        raise ValueError("output cannot be negative")
+    lin = linregress(inp, logoutput)
+    l = lin.function.split("x + ")
+    l = applylist(l, float)
+    l = applylist(l, Function("a", "10**a"))
+    return Function("x", "{0}*({1}**x)".format(l[1], l[0]))
 
 
 def isPro(x, y):

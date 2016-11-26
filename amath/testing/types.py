@@ -102,6 +102,19 @@ def isNumber(x):
         return False
 
 
+def isValue(x):
+    try:
+        x.__add__
+        x.__sub__
+        x.__mul__
+        x.__div__
+        x.__pow__
+        return True
+    except AttributeError:
+        return False
+
+
+
 def interpreter(t, boolreturn=False):
     # type: (type, bool) -> FunctionType
     import inspect

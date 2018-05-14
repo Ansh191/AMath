@@ -1,4 +1,4 @@
-class table():
+class table:
     def __init__(self, x=None, y=None):
         if x is None:
             x = []

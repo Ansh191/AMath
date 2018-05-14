@@ -1,4 +1,3 @@
-from __future__ import print_function
 import os as _os
 
 dir_path = _os.path.dirname(_os.path.realpath(__file__))
@@ -6,7 +5,6 @@ with open(dir_path + _os.sep + 'words.txt') as word_list:
     eng_words = set(word.strip().lower() for word in word_list)
 
 del dir_path
-del _os
 
 ascii = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
          "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D",
@@ -94,8 +92,9 @@ def whitespace(s):
 
 
 def word(w, suppress=False):
-    from urllib import urlencode
-    from urllib2 import urlopen, URLError
+    from urllib.parse import urlencode
+    from urllib.request import urlopen
+    from urllib.error import URLError
     global eng_words
     if type(w) is not str:
         raise TypeError("s must be a string")
@@ -104,19 +103,19 @@ def word(w, suppress=False):
         return True
 
     def wolfram_cloud_call(**args):
-        arguments = dict([(key, arg) for key, arg in args.items()])
+        arguments = dict([(key, arg) for key, arg in list(args.items())])
         try:
             result = urlopen("http://www.wolframcloud.com/objects/bdf9bbc4-6b59-4821-9053-9d453f7a9b39",
-                             urlencode(arguments))
+                             urlencode(arguments).encode("ascii"))
         except URLError:
             if not suppress:
                 print("Internet connection required for full dictionary, only providing small dictionary currently")
-            return "{}"
+            return b"{}"
         else:
             return result.read()
 
     textresult = wolfram_cloud_call(x=fixed)
-    if textresult == "{}":
+    if textresult == b"{}":
         return False
     else:
         # r = textresult[2:-2]
@@ -142,7 +141,6 @@ def pgenerator(length, words=False):
         return "".join(l)
     elif words:
         import random as _r
-        import os as _os
         _r.seed(_os.urandom(1024))
         x = whitespace("".join("{0} ".format(_r.choice(list(eng_words))) for _ in range(length)))
         return x
@@ -156,3 +154,6 @@ def wordcount(s):
     fixed = whitespace(s)
     all_words = fixed.split()
     return len(all_words)
+
+
+del _os

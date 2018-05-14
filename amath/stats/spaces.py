@@ -1,4 +1,6 @@
 from amath.constants import nan
+
+
 def linspace(start, stop, num=50, endpoint=True, retstep=False):
     num = int(num)
     if num < 0:

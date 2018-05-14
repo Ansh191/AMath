@@ -1,6 +1,3 @@
-from __future__ import print_function
-
-
 def reverse(l):
     if type(l) != list:
         raise TypeError("l must be a list")

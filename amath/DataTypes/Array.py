@@ -1,4 +1,4 @@
-class _array:
+class _Array:
     def __init__(self, *args):
         if len(args) > 2:
             raise ValueError("Only takes 2 arguments")
@@ -13,7 +13,6 @@ class _array:
             except TypeError:
                 self.value = args[0]
 
-            tp = object
             try:
                 tp = type(self.value[0])
                 for i in self.value:
@@ -80,4 +79,5 @@ class _array:
         if isinstance(self.value, list):
             self.value.append(value)
 
-Array = type("Array", (_array, object), {})
+
+Array = type("Array", (_Array, object), {})

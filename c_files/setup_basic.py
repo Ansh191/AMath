@@ -5,5 +5,5 @@ module1 = Extension('_basic',
 
 setup(name='_basic',
       version='0.1',
-      description='Basic functions',
+      description='Basic Mathematical Functions',
       ext_modules=[module1])

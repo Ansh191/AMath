@@ -1,3 +1,4 @@
+from amath.DataTypes.types import FunctionType
 from amath.Errors import InterpretationError
 
 
@@ -45,16 +46,16 @@ def isnan(x):
 
 
 def intQ(x):
-    import sys
-    if isinstance(x, int):
-        del sys
-        return True
-    else:
-        if sys.version_info[0] == 2:
-            if isinstance(x, long):
-                del sys
-                return True
-        del sys
+    try:
+        x = float(x)
+    except (ValueError, TypeError):
+        return False
+    try:
+        if int(x) == x:
+            return True
+        else:
+            return False
+    except OverflowError:
         return False
 
 
@@ -94,7 +95,7 @@ def isComplex(x):
 
 def isNumber(x):
     try:
-        x = complex(x)
+        complex(x)
         return True
     except TypeError:
         return False
@@ -104,15 +105,14 @@ def isNumber(x):
 
 def isValue(x):
     try:
-        x.__add__
-        x.__sub__
-        x.__mul__
-        x.__div__
-        x.__pow__
+        x + 2
+        x - 2
+        x * 2
+        x / 2
+        x ** 2
         return True
     except AttributeError:
         return False
-
 
 
 def interpreter(t, boolreturn=False):
@@ -127,7 +127,7 @@ def interpreter(t, boolreturn=False):
         elif inspect.isclass(t):
             y = True
 
-    def inter(x):
+    def _interpreter(x):
         if y:
             if isinstance(x, t):
                 if boolreturn:
@@ -146,4 +146,4 @@ def interpreter(t, boolreturn=False):
                 return False
             raise InterpretationError(str(type(x)) + " " + str(x) + " is not of " + str(t))
 
-    return inter
+    return _interpreter

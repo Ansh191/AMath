@@ -1,10 +1,8 @@
-import _basic as _b
-# from _basic import log, ln, log2, log10
+import amath.ext._basic as _b
+
 
 def sqrt(x):
-    # type: (int) -> float
-    # type: (float) -> float
-    # type: (complex) -> complex
+    # type: (object) -> float
     """Returns square root of X
     :type x: object
     :param x:
@@ -36,7 +34,13 @@ def sqrt(x):
     try:
         return _b.sqrt(x)  # call the c-api
     except TypeError:
-        raise TypeError("{0} is not a number".format(str(x)))  # if it failed, x is not a number
+        try:
+            return _b.sqrt(float(x))
+        except ValueError:
+            try:
+                return _b.sqrt(complex(x))
+            except ValueError:
+                raise TypeError("{0} is not a number".format(str(x)))  # if it failed, x is not a number
     except ValueError:
         return sqrt(abs(x)) * 1j  # x is negative
     except:  # in case of _basic failure
@@ -77,9 +81,15 @@ def abs(x):
         return _b.abs(x)  # call c-api
     except:
         try:
-            return x.__abs__()  # if c-api fails, run __abs__ function
-        except AttributeError:
-            raise TypeError("{0} is not a number".format(str(x)))  # x is then not a valid number
+            return _b.abs(float(x))
+        except ValueError:
+            try:
+                return _b.abs(complex(x))
+            except ValueError:
+                try:
+                    return x.__abs__()  # if c-api fails, run __abs__ function
+                except AttributeError:
+                    raise TypeError("{0} is not a number".format(str(x)))  # x is then not a valid number
 
 
 # TODO-Look at gamma
@@ -91,16 +101,23 @@ def fac(x):
     :return: x factorial
 
     >>> fac(0)
-    1
+    1.0
     >>> fac(5)
     120
+    >>> fac(0.5)
+    0.886226925452758
+    >>> fac(float("inf"))
+    inf
     """
-    from amath.constants import Cinf
+    x = float(x)
     if x == 0:
         return 1.0
     elif x < 0:
+        from amath.constants import Cinf
         return Cinf
     else:
+        if x > 170:
+            x = int(x)
         return x * gamma(x)
 
 
@@ -114,18 +131,44 @@ def gamma(x):
         y = _b.gamma(x)  # call c-api
     except:
         t = True
-    from amath.stats.stats import product
-    from amath.DataTypes.Function import Function
+    from amath.DataTypes import Infinity
+    from amath.testing.types import isinf, isnan, intQ
+    x = int(x)
     if x >= 170 or t:  # to not overflow float or if in _basic failure
-        if isinstance(x, int) or isinstance(x, long):  # x must be an int
-            return product(Function("k", "k"), 1, x) / x
+        if intQ(x):  # x must be an int
+            from amath.stats.stats import product
+            return product(lambda k: k, 1, x) // x
+        elif isinf(x):
+            if x > 0:
+                return Infinity(True)
+            else:
+                from amath.Errors import Indeterminate
+                raise Indeterminate()
         else:
             raise TypeError("For values over 170, x must be a integer")
     else:
-        if isinstance(x, int) or isinstance(x, long) or int(x) == x:
+        if isinf(y) or isnan(y):
+            return Infinity(None)
+        elif isinstance(x, int) or int(x) == x:
             return int(y)
         else:
             return y
+
+
+# @lru_cache(1024)
+def fib(n):
+    try:
+        y = _b.fib(n)
+    except:
+        y = float("inf")
+
+    if y == float("inf"):
+        from amath.constants import gr, pi
+        from .trig import cos
+        n = float(n)
+        return int(int(gr ** n - cos(n * pi) / gr ** n) / sqrt(5))
+    else:
+        return y
 
 
 def N():

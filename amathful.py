@@ -28,14 +28,14 @@ def sqrt(x):
     2
     """
     if type(x) is complex:
-        return x ** (0.5)
+        return x ** 0.5
     if type(x) is not int:
         if type(x) is not float:
             if not isinstance(x, Fraction):
                 raise TypeError(str(x) + " is not a float")
     if x < 0:
         return sqrt(abs(x)) * 1j
-    return x ** (0.5)
+    return x ** 0.5
 
 
 class _Infinity:
@@ -382,7 +382,7 @@ def frtodec(x):
     return float(x.numerator) / float(x.denominator)
 
 
-class _Fraction():
+class _Fraction:
     """
     Fraction Class. Used to create a data type
     """
@@ -553,7 +553,7 @@ class _Fraction():
 
     def __abs__(self):
         if self.numerator < 0:
-            return Fraction(-(self.numerator), self.denominator)
+            return Fraction(-self.numerator, self.denominator)
         else:
             return self
 
@@ -618,7 +618,7 @@ class _Fraction():
         return a
 
     def __neg__(self):
-        return Fraction(-(self.numerator), self.denominator)
+        return Fraction(-self.numerator, self.denominator)
 
     def __pos__(self):
         return Fraction(self.numerator, self.denominator)
@@ -629,14 +629,13 @@ Fraction = type("Fraction", (_Fraction, object), {})
 
 class _timeObject:
     def __init__(self, h=None, m=None, s=None, ms=0):
-        import datetime as dt
 
         self.h = 0
         self.m = 0
         self.s = 0
         if h is None:
             if m is None:
-                if s != None:
+                if s is not None:
                     raise TypeError("Invalid Argument")
             else:
                 raise TypeError("Invalid Argument")
@@ -658,7 +657,7 @@ class _timeObject:
             self.s = x.second
             if self.s < 10:
                 self.s = "0{0}".format(self.s)
-            self.ms = (x.microsecond) / 1000.0
+            self.ms = x.microsecond / 1000.0
             if self.ms.is_integer():
                 self.ms = int(self.ms)
         else:
@@ -761,7 +760,6 @@ class _timeObject:
 
     @staticmethod
     def now(self):
-        import datetime as dt
 
         x = dt.datetime.now()
         return timeObject(x.hour, x.minute, x.second, x.microsecond / 1000)
@@ -774,7 +772,7 @@ class _dateObject:
     def __init__(self, m=None, d=None, y=None):
         if d is None:
             if m is None:
-                if y != None:
+                if y is not None:
                     raise TypeError("Invalid Argument")
             else:
                 raise TypeError("Invalid Argument")
@@ -786,7 +784,6 @@ class _dateObject:
                     raise TypeError("Invalid Argument")
 
         if d is None:
-            import datetime as dt
 
             x = dt.datetime.now()
             self.d = x.day
@@ -928,7 +925,6 @@ class _dateObject:
 
     @staticmethod
     def now(self):
-        import datetime as dt
 
         x = dt.datetime.now()
         return dateObject(x.month, x.day, x.year)
@@ -1263,13 +1259,13 @@ def frexp(x):
     while not correct:
         p = pow(2, i)
         m = d(x, p)
-        if abs(m) >= 0.5 and abs(m) < 1:
+        if 0.5 <= abs(m) < 1:
             correct = True
         else:
             i = i + 1
         if i == 10:
             correct == True
-    return (m, i)
+    return m, i
 
 
 def ldexp(x, i):
@@ -1292,18 +1288,18 @@ def fround(x):
     :param x:
     :return:
 
-    >>> fround(5)
+    >>> round(5)
     5
-    >>> fround(2.5000000001)
+    >>> round(2.5000000001)
     3
-    >>> fround(-2.56)
+    >>> round(-2.56)
     -3
 
     If X is exactly mid way- round to even number
 
-    >>> fround(5.5)
+    >>> round(5.5)
     6
-    >>> fround(4.5)
+    >>> round(4.5)
     4
     """
     try:
@@ -1826,7 +1822,6 @@ def nextprime(n):
 
 
 def sample(pop, k, seed=None):
-    from random import sample as s
     from random import seed as se
 
     if seed != None:
@@ -2459,14 +2454,10 @@ def pGenerator(length, words=False):
     if type(length) is not int:
         raise TypeError("length must be an integer")
     if not words:
-        import random as _r
-        import os as _os
 
         _r.seed(_os.urandom(1024))
         return "".join(_r.choice(ascii) for i in range(length))
     elif words:
-        import random as _r
-        import os as _os
 
         _r.seed(_os.urandom(1024))
         return whitespace("".join("{0} ".format(_r.choice(list(eng_words))) for i in range(length)))

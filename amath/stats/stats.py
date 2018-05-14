@@ -30,8 +30,12 @@ def sum(f, i=None, maximum=None, step=1, l=None):
 
     if l is None:
         x = 0
+        previous_value = 0
         while i <= maximum:
-            x += f(i)
+            value = f(i)
+            if value == previous_value:
+                break
+            x += value
             i += step
         return x
     else:
@@ -60,15 +64,13 @@ def product(f, i=None, maximum=None, step=1, l=None):
 
     if l is None:
         x = 1
-        before = 0.0
+        previous_value = 1
         while i <= maximum:
-            r = f(i)
-            x *= r
+            value = f(i)
+            # if value == previous_value:
+            #     break
+            x *= value
             i += step
-            if before == r:
-                break
-            else:
-                before = r
         return x
     elif i is not None:
         x = 1
@@ -112,16 +114,16 @@ def linregress(inp, output):
 
 def expregress(inp, output):
     from amath.lists.lists import applylist, anytrue
-    from amath.Computation.power import log10
+    from amath.Computation.power import ln
     from amath.testing.types import isnan, isinf
     from amath.DataTypes.Function import Function
-    logoutput = applylist(output, log10)
+    logoutput = applylist(output, ln)
     if anytrue(logoutput, isnan) or anytrue(logoutput, isinf):
         raise ValueError("output cannot be negative")
     lin = linregress(inp, logoutput)
     l = lin.function.split("x + ")
     l = applylist(l, float)
-    l = applylist(l, Function("a", "10**a"))
+    l = applylist(l, Function("a", "e**a"))
     return Function("x", "{0}*({1}**x)".format(l[1], l[0]))
 
 
@@ -130,10 +132,10 @@ def isPro(x, y):
         raise TypeError("x must be a list")
     if type(y) != list:
         raise TypeError("y must be a list")
-    if len(x) < 2:
-        raise ValueError("length of lists must be greater than 1")
     if len(x) != len(y):
         raise TypeError("length of lists must be same")
+    if len(x) <= 1:
+        raise ValueError("length of lists must be greater than 1")
 
     s = 0
     f = False

@@ -2,6 +2,8 @@ from .Basic import fac
 
 
 def comb(n, k):
+    n = float(n)
+    k = float(k)
     if k > n:
         return 0
     if k < 0:
@@ -10,6 +12,8 @@ def comb(n, k):
 
 
 def perm(n, k):
+    k = float(k)
+    n = float(n)
     if k > n:
         return 0
     if k < 0:

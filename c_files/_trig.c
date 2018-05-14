@@ -205,19 +205,19 @@ m_sinh(PyObject *self, PyObject *args)
 }
 
 static PyMethodDef _trigMethods[] = {
-    {"sin", m_sin, METH_VARARGS, "Sine of x"},
-	{"cos", m_cos, METH_VARARGS, "Cosine of x"},
-	{"tan", m_tan, METH_VARARGS, "Tangent of x"},
-	{"cot", m_cot, METH_VARARGS, "Cotangent of x"},
-	{"sec", m_sec, METH_VARARGS, "Secant of x"},
-	{"csc", m_csc, METH_VARARGS, "Cosecant of x"},
-	{"asin", m_asin, METH_VARARGS, "Arcsine of x"},
-	{"acos", m_acos, METH_VARARGS, "Arccosine of x"},
-	{"atan", m_atan, METH_VARARGS, "Arctangent of x"},
-	{"acot", m_acot, METH_VARARGS, "Arccotangent of x"},
-	{"asec", m_asec, METH_VARARGS, "Arcsecant of x"},
-	{"acsc", m_acsc, METH_VARARGS, "Arccosecant of x"},
-    {NULL, NULL, 0, NULL}        /* Sentinel */
+    { "sin", (PyCFunction)m_sin, METH_VARARGS, "Sine of x" },
+	{ "cos", (PyCFunction)m_cos, METH_VARARGS, "Cosine of x" },
+	{ "tan", (PyCFunction)m_tan, METH_VARARGS, "Tangent of x" },
+	{ "cot", (PyCFunction)m_cot, METH_VARARGS, "Cotangent of x" },
+	{ "sec", (PyCFunction)m_sec, METH_VARARGS, "Secant of x" },
+	{ "csc", (PyCFunction)m_csc, METH_VARARGS, "Cosecant of x" },
+	{ "asin", (PyCFunction)m_asin, METH_VARARGS, "Arcsine of x"} ,
+	{ "acos", (PyCFunction)m_acos, METH_VARARGS, "Arccosine of x" },
+	{ "atan", (PyCFunction)m_atan, METH_VARARGS, "Arctangent of x" },
+	{ "acot", (PyCFunction)m_acot, METH_VARARGS, "Arccotangent of x" },
+	{ "asec", (PyCFunction)m_asec, METH_VARARGS, "Arcsecant of x" },
+	{ "acsc", (PyCFunction)m_acsc, METH_VARARGS, "Arccosecant of x" },
+    { NULL, NULL, 0, NULL }        /* Sentinel */
 };
 
 

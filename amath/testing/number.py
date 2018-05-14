@@ -45,7 +45,7 @@ def coprime(x, y):
 def perfect(x):
     """Checks if x is a perfect number"""
     from amath.Computation.num_properties import factors
-    fac = factors(x)[1:-1]
+    fac = factors(x)[0:-1]
     y = 0
     for i in fac:
         y += i

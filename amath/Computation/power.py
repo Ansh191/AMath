@@ -1,5 +1,11 @@
-from __future__ import print_function, division
+import amath.ext._basic as _b
+from amath.ext._basic import log
+
 from amath.constants import e
+
+
+def ln(x):
+    return log(x, e)
 
 
 def exp(x):
@@ -10,7 +16,7 @@ def exp(x):
     >>> exp(1)
     2.718281828459045
     """
-    return e ** x
+    return pow(e, x)
 
 
 # noinspection PyShadowingBuiltins
@@ -32,9 +38,44 @@ def pow(x, y, m=None):
     1
     """
     try:
-        return x.__pow__(y, m)
+        return _b.pow(x, y, m)
     except TypeError:
-        raise TypeError("{0}{1} cannot be raised to the {2}{3} power".format(type(x), x, type(y), y))
+        try:
+            x = float(x)
+        except:
+            try:
+                x = complex(x)
+            except:
+                raise TypeError("{0}{1} cannot be raised to the {2}{3} power".format(type(x), x, type(y), y))
+
+        try:
+            y = float(y)
+        except:
+            try:
+                y = complex(y)
+            except:
+                raise TypeError("{0}{1} cannot be raised to the {2}{3} power".format(type(x), x, type(y), y))
+
+        if m is not None:
+            try:
+                m = float(m)
+            except:
+                try:
+                    m = complex(m)
+                except:
+                    raise TypeError("{0}{1} cannot be raised to the {2}{3} power".format(type(x), x, type(y), y))
+        try:
+            return _b.pow(x, y, m)
+        except ValueError:
+            if isinstance(y, float):
+                from amath.DataTypes.Fraction import dectofr
+                y = dectofr(y)
+                return _b.pow(x, y, m)
+    except ValueError:
+        if isinstance(y, float):
+            from amath.DataTypes.Fraction import dectofr
+            y = dectofr(y)
+            return _b.pow(x, y, m)
 
 
 def root(x, y):
@@ -51,25 +92,34 @@ def root(x, y):
     0.0
     >>> root(2,0)
     Traceback (most recent call last):
-    ZeroDivisionError: division by zero
+        ...
+    ZeroDivisionError: float division by zero
     >>> root(-8, 3)
-    2j
-    >>> root(8j, 3)
-    2j
+    -2.0
+    >>> root(4j, 2)
+    (1.4142135623730951+1.4142135623730951j)
     """
     if type(x) is complex:
+        return x ** (1.0 / y)
+    if type(y) is complex:
         return x ** (1.0 / y)
     try:
         x = float(x)
     except:
         raise TypeError("{0} is not a number".format(x))
-    if x < 0:
+    try:
+        y = float(y)
+    except:
+        raise TypeError("{0} is not a number".format(y))
+    if x < 0 and y % 2 == 0:
         return root(abs(x), y) * 1j
+    elif x < 0:
+        return -root(abs(x), y)
     return x ** (1.0 / y)
 
-
-def expm1(x):
-    if abs(x) < 1e-5:
-        return x + 0.5 * x * x
-    else:
-        return exp(x) - 1.0
+# def expm1(x):
+#
+#     if abs(x) < 1e-5:
+#         return x + 0.5 * x * x
+#     else:
+#         return exp(x) - 1.0

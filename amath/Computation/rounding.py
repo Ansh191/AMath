@@ -1,31 +1,34 @@
-def ceil(x):
-    """
-    Returns the ceiling of a number
-    :param x: float
-    :return: integer
-
-    >>> ceil(5.3)
-    6
-    >>> ceil(6)
-    6
-    >>> ceil(-5.3)
-    -5
-    """
-    try:
-        if type(x) == str:
-            forstring = float(x)
-            y = int(forstring)
-        else:
-            y = int(x)
-    except ValueError:
-        raise TypeError("A float is required")
-    if y == float(x):
-        return x
-    if float(x) > y:
-        return y + 1
-    else:
-        return y
-
+# def ceil(x):
+#     """
+#     Returns the ceiling of a number
+#     :param x: float
+#     :return: integer
+#
+#     >>> ceil(5.3)
+#     6
+#     >>> ceil(6)
+#     6
+#     >>> ceil(-5.3)
+#     -5
+#     """
+#     try:
+#         if type(x) == str:
+#             forstring = float(x)
+#             y = int(forstring)
+#         else:
+#             y = int(x)
+#     except:
+#         try:
+#             return (x // 1) + 1
+#         except:
+#             raise TypeError("A float is required")
+#     if y == float(x):
+#         return x
+#     if float(x) > y:
+#         return y + 1
+#     else:
+#         return y
+#
 
 def floor(x):
     """
@@ -42,52 +45,58 @@ def floor(x):
     """
     try:
         y = int(x)
-    except ValueError:
-        raise TypeError("A float is required")
+    except:
+        try:
+            return x // 1
+        except:
+            raise TypeError("A float is required")
     if y < 0:
         return y - 1
     else:
         return y
 
 
-def trunc(x):
-    """
-    Return X truncated
-    :param x: any float or int
-    :return: X truncated
-    >>> trunc(5.2)
-    5
-    >>> trunc(-5.2)
-    -5
-    """
-    if x > 0:
-        y = floor(x)
-    else:
-        y = ceil(x)
-    return y
+#
+#
+# def trunc(x):
+#     """
+#     Return X truncated
+#     :param x: any float or int
+#     :return: X truncated
+#     >>> trunc(5.2)
+#     5
+#     >>> trunc(-5.2)
+#     -5
+#     """
+#     if x > 0:
+#         y = floor(x)
+#     else:
+#         y = ceil(x)
+#     return y
 
 
-def fround(x, m):
+def round(x, m=0):
     """
     rounds X to nearest integer
+    :param m: 
     :param x:
     :return:
 
-    >>> fround(5)
-    5
-    >>> fround(2.5000000001)
-    3
-    >>> fround(-2.56)
-    -3
+    >>> round(5)
+    5.0
+    >>> round(2.5000000001)
+    3.0
+    >>> round(-2.56)
+    -3.0
 
     If X is exactly mid way- round to even number
 
-    >>> fround(5.5)
-    6
-    >>> fround(4.5)
-    4
+    >>> round(5.5)
+    6.0
+    >>> round(4.5)
+    4.0
     """
-    b = 10**(-m)
+    b = 10 ** (-m)
 
     def f(v):
         intx = int(floor(v))
@@ -105,5 +114,6 @@ def fround(x, m):
     try:
         return f(float(x) / float(b)) * float(b)
     except ValueError:
-        raise TypeError("A float or integer is required")
-
+        raise TypeError("A float, integer, or complex is required")
+    except TypeError:
+        return complex(f(float(x.real) / b) * b, f(float(x.imag) / b) * b)

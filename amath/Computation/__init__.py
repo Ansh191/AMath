@@ -1,9 +1,9 @@
 from .Basic import *
+from .means import *
 from .num_properties import *
+from .permutations import *
 from .power import *
 from .prime import *
 from .relationship import *
 from .rounding import *
 from .trig import *
-from .permutations import *
-

@@ -1,16 +1,20 @@
-from amath.Computation.rounding import trunc, floor
+from functools import total_ordering
+
+from amath.Computation.num_properties import digits, digitsafterdecimal
 from amath.Computation.relationship import gcd
-from amath.Computation.num_properties import digits
+from amath.Computation.rounding import trunc
 
 
+@total_ordering
 class _fraction(object):
+    __slots__ = ['onum', 'oden', 'numerator', 'denominator', 'whole']
     """
     Fraction Class. Used to create a data type
     """
 
-    def __init__(self, n, d):
+    def __new__(cls, n, d):
         """
-        Fraction initilization
+        Fraction initialization
         :param n: numerator
         :param d: denomenator
         :return:
@@ -27,6 +31,9 @@ class _fraction(object):
         >>> Fraction(4,10)
         2/5
         """
+        self = object.__new__(cls)
+        self.onum = n
+        self.oden = d
         self.numerator = n / gcd(abs(n), abs(d))
         self.denominator = d / gcd(abs(n), abs(d))
         self.whole = 0
@@ -41,6 +48,7 @@ class _fraction(object):
         if self.denominator == 0:
             raise ZeroDivisionError
         self.whole = trunc(frtodec(self))
+        return self
 
     def __add__(self, other):
         """
@@ -55,7 +63,7 @@ class _fraction(object):
         >>> Fraction(1,2) + 2
         5/2
         >>> Fraction(1,2) + 2.5
-        3
+        3/1
         """
         ax = other
         if type(other) is float:
@@ -63,23 +71,36 @@ class _fraction(object):
         return Fraction(self.numerator * ax.denominator + self.denominator * ax.numerator,
                         self.denominator * ax.denominator)
 
-    def __radd__(self, other):
-        try:
-            other = float(other)
-        except ValueError:
-            raise NotImplemented
-        ax = dectofr(other)
-        return Fraction(self.numerator * ax.denominator + self.denominator * ax.numerator,
-                        self.denominator * ax.denominator)
+    __radd__ = __add__
 
     def __sub__(self, other):
+        # type: (object) -> Fraction
+        """
+        Subtract a value from Fraction
+
+        :param other:
+        :return:
+
+        >>> Fraction(3, 4) - Fraction(1, 4)
+        1/2
+        >>> Fraction(7, 4) - Fraction(3 ,4)
+        1/1
+        >>> Fraction(6, 4) - 2
+        -1/2
+        >>> Fraction(11, 2) - 3.5
+        2/1
+
+        """
         dx = other
         if type(other) is float:
             dx = dectofr(other)
         return Fraction(self.numerator * dx.denominator - self.denominator * dx.numerator,
                         self.denominator * dx.denominator)
 
+    __rsub__ = __sub__
+
     def __mul__(self, other):
+        # type: (object) -> Fraction
         """
         Multiplication
         :param other:
@@ -88,7 +109,7 @@ class _fraction(object):
         >>> Fraction(1,2) * Fraction(5,4)
         5/8
         >>> Fraction(1,2) * 4
-        2
+        2/1
         >>> Fraction(1,3) * 2.5
         5/6
         """
@@ -101,33 +122,15 @@ class _fraction(object):
         mx = dectofr(other)
         return Fraction(self.numerator * mx.numerator, self.denominator * mx.denominator)
 
-    def __rmul__(self, other):
-        """
-        Multiplication
-        :param other:
-        :return:
-
-        >>> Fraction(1,2) * Fraction(5,4)
-        5/8
-        >>> 4 * Fraction(1,2)
-        2
-        >>> 2.5 * Fraction(1,3)
-        5/6
-        """
-        try:
-            other = float(other)
-        except ValueError:
-            return NotImplemented
-        except TypeError:
-            return NotImplemented
-        mx = dectofr(other)
-        return Fraction(self.numerator * mx.numerator, self.denominator * mx.denominator)
+    __rmul__ = __mul__
 
     def __truediv__(self, other):
         dx = other
         if type(other) is float:
             dx = dectofr(other)
         return Fraction(self.numerator * dx.denominator, self.denominator * dx.numerator)
+
+    __rtruediv__ = __truediv__
 
     def __div__(self, other):
         """
@@ -153,34 +156,58 @@ class _fraction(object):
             return Fraction(y, z) % modulo
         return Fraction(y, z)
 
+    def __rpow__(self, other, modulo=None):
+        from amath.Computation.power import root
+        return pow(root(other, self.denominator), self.numerator)
+
     def __str__(self):
         return "%s/%s" % (self.numerator, self.denominator)
 
-    def __cmp__(self, other):
-        """
-        compare two values
-        :param other:
-        :return:
+    # def __cmp__(self, other):
+    #     """
+    #     compare two values
+    #     :param other:
+    #     :return:
+    #
+    #     >>> Fraction(1,2) < Fraction(2,3)
+    #     True
+    #     >>> Fraction(2,3) == Fraction(4,6)
+    #     True
+    #     >>> Fraction(1,3) < 1
+    #     True
+    #     >>> Fraction(5,2) > 2.5
+    #     False
+    #     """
+    #     if type(other) is float:
+    #         other = dectofr(other)
+    #     a = Fraction(self.numerator * other.denominator, self.denominator * other.denominator)
+    #     b = Fraction(other.numerator * self.denominator, self.denominator * other.denominator)
+    #     if a.onum > b.onum:
+    #         return 1
+    #     elif a.onum is b.onum:
+    #         return 0
+    #     else:
+    #         return -1
 
-        >>> Fraction(1,2) < Fraction(2,3)
-        True
-        >>> Fraction(2,3) == Fraction(4,6)
-        True
-        >>> Fraction(1,3) < 1
-        True
-        >>> Fraction(5,2) > 2.5
-        False
-        """
+    def __eq__(self, other):
         if type(other) is float:
             other = dectofr(other)
         a = Fraction(self.numerator * other.denominator, self.denominator * other.denominator)
         b = Fraction(other.numerator * self.denominator, self.denominator * other.denominator)
-        if a.onum > b.onum:
-            return 1
-        elif a.onum is b.onum:
-            return 0
+        if a.onum == b.onum:
+            return True
         else:
-            return -1
+            return False
+
+    def __lt__(self, other):
+        if type(other) is float:
+            other = dectofr(other)
+        a = Fraction(self.numerator * other.denominator, self.denominator * other.denominator)
+        b = Fraction(other.numerator * self.denominator, self.denominator * other.denominator)
+        if a.onum < b.onum:
+            return True
+        else:
+            return False
 
     def __nonzero__(self):
         """
@@ -258,8 +285,8 @@ class _fraction(object):
         >>> Fraction(1,2) % Fraction(1,3)
         1/6
         """
-        z = trunc(float(self) / float(other))
-        a = self - (float(other) * float(z))
+        z = trunc(self / other)
+        a = self - (other * z)
         return a
 
     def __abs__(self):
@@ -283,66 +310,69 @@ class _fraction(object):
         return self, x
 
 
-Fraction = type("Fraction", (_fraction, object), {}) # Generate our type
+Fraction = type("Fraction", (_fraction, object), {})  # Generate our type
 
 
-def dectofr(x, error=0.00000001):
-    # type: (float, float) -> Fraction
+def dectofr(x):
+    # type: (float) -> Fraction
     """
     Converts decimals to fractions
     :param x: decimal to convert
-    :param error: just error
     :return: Fraction
 
     >>> dectofr(2.5)
     5/2
     >>> dectofr(0.25)
     1/4
-
-    Repeating decimals must have many digits
-
-    >>> dectofr(0.333333333333333333333)
-    1/3
+    >>> dectofr(2.1)
+    21/10
 
     Does work for int
 
     >>> dectofr(5)
-    5
+    5/1
     """
-    n = int(floor(x))
-    x -= n
-    if x < error:
-        # return (n, 1)
-        return Fraction(n, 1)
-    elif 1 - error < x:
-        # return (n+1, 1)
-        return Fraction(n + 1, 1)
+    # n = int(floor(x))
+    # x -= n
+    # if x < error:
+    #     # return (n, 1)
+    #     return Fraction(n, 1)
+    # elif 1 - error < x:
+    #     # return (n+1, 1)
+    #     return Fraction(n + 1, 1)
+    #
+    # # The lower fraction is 0/1
+    # lower_n = 0
+    # lower_d = 1
+    # # The upper fraction is 1/1
+    # upper_n = 1
+    # upper_d = 1
+    # while True:
+    #     # The middle fraction is (lower_n + upper_n) / (lower_d + upper_d)
+    #     middle_n = lower_n + upper_n
+    #     middle_d = lower_d + upper_d
+    #     # If x + error < middle
+    #     if middle_d * (x + error) < middle_n:
+    #         # middle is our new upper
+    #         upper_n = middle_n
+    #         upper_d = middle_d
+    #     # Else If middle < x - error
+    #     elif middle_n < (x - error) * middle_d:
+    #         # middle is our new lower
+    #         lower_n = middle_n
+    #         lower_d = middle_d
+    #     # Else middle is our best fraction
+    #     else:
+    #         # return (n * middle_d + middle_n, middle_d)
+    #         # return "{0}/{1}".format(n*middle_d+middle_n,middle_d)
+    #         return Fraction(n * middle_d + middle_n, middle_d)
 
-    # The lower fraction is 0/1
-    lower_n = 0
-    lower_d = 1
-    # The upper fraction is 1/1
-    upper_n = 1
-    upper_d = 1
-    while True:
-        # The middle fraction is (lower_n + upper_n) / (lower_d + upper_d)
-        middle_n = lower_n + upper_n
-        middle_d = lower_d + upper_d
-        # If x + error < middle
-        if middle_d * (x + error) < middle_n:
-            # middle is our new upper
-            upper_n = middle_n
-            upper_d = middle_d
-        # Else If middle < x - error
-        elif middle_n < (x - error) * middle_d:
-            # middle is our new lower
-            lower_n = middle_n
-            lower_d = middle_d
-        # Else middle is our best fraction
-        else:
-            # return (n * middle_d + middle_n, middle_d)
-            # return "{0}/{1}".format(n*middle_d+middle_n,middle_d)
-            return Fraction(n * middle_d + middle_n, middle_d)
+    n = x
+    d = 1
+    dig = digitsafterdecimal(x)
+    multiplier = 10 ** dig
+    # print(n, d, dig, multiplier, n * multiplier, d * multiplier)
+    return Fraction(int(n * multiplier), int(d * multiplier))
 
 
 def frtodec(x):

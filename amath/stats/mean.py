@@ -1,15 +1,13 @@
-from amath.constants import inf
+import amath.ext._statistics as s
 
 
 def mean(x):
-    total = 0
-    for i in x:
-        total += i
-    a = float(total) / len(x)
-    return a
+    # type: (list) -> float
+    return s.mean(list(x))
 
 
 def mode(x):
+    # type: (list) -> object
     x = list(x)
     t = 0
     w = None
@@ -30,3 +28,12 @@ def mode(x):
                 v = w
                 w = [v, i]
     return w
+
+
+def median(x):
+    # type: (list) -> float
+    """
+
+    :type x: list
+    """
+    return s.median(list(x))

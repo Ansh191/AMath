@@ -1,6 +1,5 @@
 #include <Python.h>
 #include <math.h>
-#include <stdio.h>
 
 double _abs(double v)
 {
@@ -175,6 +174,38 @@ m_log2(PyObject *self, PyObject *arg)
 	return m_log(self, tuple);
 }
 
+static PyObject *
+m_fib(PyObject *self, PyObject *arg)
+{
+    double gr = (1 + sqrt(5)) / 2.0;
+    double value;
+    PyObject *val = PyNumber_Float(arg);
+    if (!val)
+    {
+        PyErr_SetString(PyExc_TypeError, "Argument must be a number");
+		return NULL;
+    }
+    value = PyFloat_AsDouble(val);
+    double result = floor((pow(gr, value) - pow(1 - gr, value)) / sqrt(5));
+    return Py_BuildValue("d", result);
+}
+
+static PyObject *
+m_exp(PyObject *self, PyObject *arg)
+{
+    double e = 2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427427466;
+    double value;
+    PyObject *val = PyNumber_Float(arg);
+    if (!val)
+    {
+        PyErr_SetString(PyExc_TypeError, "Argument must be a number");
+		return NULL;
+    }
+    value = PyFloat_AsDouble(val);
+    double result = floor((pow(e, value) - pow(1 - e, value)) / sqrt(5));
+    return Py_BuildValue("d", result);
+}
+
 
 static PyMethodDef _basicMethods[] = {
 	{ "sqrt", m_sqrt, METH_O, "Sqrt of x" },
@@ -183,27 +214,21 @@ static PyMethodDef _basicMethods[] = {
 	{ "gamma", m_gamma, METH_VARARGS, "Gamma Function" },
 	{ "ln", m_ln, METH_O, "Natural Logarithm of x" },
 	{ "log", m_log, METH_VARARGS, "Base Logarithm of x" },
-	{ "log10", m_log10, METH_O, "Base 10 Logarithm of x"},
-	{ "log2", m_log2, METH_O, "Base 2 Logarithm of x"},
+	{ "log10", m_log10, METH_O, "Base 10 Logarithm of x" },
+	{ "log2", m_log2, METH_O, "Base 2 Logarithm of x" },
+	{ "fib", m_fib, METH_O, "xth fibonacci number" },
+	{ "exp", m_exp, METH_O, "e to the xth power"},
 	{ NULL, NULL, 0, NULL }        /* Sentinel */
 };
 
-
-static PyModuleDef _basicmodule =
-{
-	PyModuleDef_HEAD_INIT,
-	"_basic",
-	"basic mathematical functions",
-	-1,
-	_basicMethods
-};
-
 PyMODINIT_FUNC
-PyInit__basic(void)
+init_basic(void)
 {
-	PyObject *module = PyModule_Create(&_basicmodule);
+	PyObject* m;
 
-	if (module == NULL)
+	m = Py_InitModule3("_basic", _basicMethods, "Basic Mathematical Functions");
+
+	if (m == NULL)
 		return NULL;
-	return module;
+	return m;
 }

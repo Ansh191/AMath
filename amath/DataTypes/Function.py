@@ -1,15 +1,14 @@
-from __future__ import print_function, division
+from collections import OrderedDict
 
 
 class _Function(object):
     __slots__ = ('run', '__call__', 'vars', 'function', 'v')
 
     def __init__(self, variables, function):
-        # type: (dict, str) -> None
-        # type: (list, str) -> None
-        # type: (str, str) -> None
+        # type: (object, str) -> None
         self.vars = {}
         self.function = function
+        # print(variables)
         if isinstance(variables, str):
             self.vars[variables] = "Value"
         elif isinstance(variables, list):
@@ -24,10 +23,17 @@ class _Function(object):
                     raise TypeError("Invalid variable")
                 if not (variables[var] in ["Value", "Number", "Imaginary", "Real", "Integer", "Whole", "Natural"]):
                     raise TypeError("Invalid variable type")
-                self.vars = variables
+            self.vars = variables
+        elif isinstance(variables, OrderedDict):
+            for var in variables:
+                if not isinstance(var, str):
+                    raise TypeError("Invalid variable")
+                if not (variables[var] in ["Value", "Number", "Imaginary", "Real", "Integer", "Whole", "Natural"]):
+                    raise TypeError("Invalid variable type")
+            self.vars = variables
         else:
             raise TypeError("Invalid variable declaration")
-
+        # print(self.vars)
         for var in self.vars:
             if var not in function:
                 self.vars.pop(var)
@@ -74,25 +80,25 @@ class _Function(object):
                     function = function[:index] + "*" + function[index:]
                 i += 1
 
-        run = None
-        __call__ = None
         vl = []
         for var in self.vars:
             vl.append(var)
         v = ", ".join(vl)
         self.v = v
+        # print(self.v)
         from amath import __all__
         c = (str(__all__)[1:-1]).replace("'", "")
         string = "def run(self, " + v + """):
                     from amath import """ + c + """
+                    from collections import OrderedDict as OD
                     self.check(""" + v + """)
                     return """ + function
         string2 = "def __call__(self, " + v + """):
                     return self.run(""" + v + ")"
-        exec string
-        exec string2
-        setattr(Function, run.__name__, run)
-        setattr(Function, __call__.__name__, __call__)
+        exec(string)
+        exec(string2)
+        exec("setattr(Function, run.__name__, run)")
+        exec("setattr(Function, __call__.__name__, __call__)")
 
     def check(self, *args):
         from amath.testing.types import isReal, isComplex, isNatural, isWhole, intQ, isNumber, isValue

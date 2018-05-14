@@ -1,5 +1,14 @@
+import amath.ext._trig as _t
+
 from amath.constants import e, pi
-import _trig as _t
+
+
+def degtorad(d):
+    return (d * pi) / 180
+
+
+def radtodeg(r):
+    return (r * 180) / pi
 
 
 def sin(a):
@@ -81,4 +90,4 @@ def arccsc(a):
     try:
         return _t.acsc(a)
     except TypeError:
-        return arcsin(1/a)
+        return arcsin(1 / a)

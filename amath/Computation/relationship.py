@@ -1,6 +1,21 @@
 
 
 def gcd(x, y):
+    """
+    Find the greatest common denominator.
+    :param x:
+    :param y:
+    :return:
+
+    >>> gcd(10,2)
+    2.0
+    >>> gcd(240, 99)
+    3.0
+    >>> gcd(5,234)
+    1.0
+    >>> gcd(23, 81)
+    1.0
+    """
     try:
         x = float(x)
         y = float(y)

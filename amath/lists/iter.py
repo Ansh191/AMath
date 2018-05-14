@@ -2,6 +2,8 @@ from amath.constants import inf
 from amath.testing.types import isReal
 
 
+# from range import range
+
 class count:
     def __init__(self, start, step=1):
         if not isReal(start):

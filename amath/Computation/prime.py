@@ -118,7 +118,6 @@ def primeQ(n, prec=30):
 
 known_primes += [x for x in range(5, 1000, 2) if primeQ(x)]
 
-
 @lru_cache()
 def compositeQ(x):
     """

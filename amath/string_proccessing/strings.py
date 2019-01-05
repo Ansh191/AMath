@@ -155,5 +155,4 @@ def wordcount(s):
     all_words = fixed.split()
     return len(all_words)
 
-
 del _os

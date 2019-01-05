@@ -8,7 +8,7 @@ def linspace(start, stop, num=50, endpoint=True, retstep=False):
     div = (num - 1) if endpoint else num
 
     # Convert float/complex array scalars to float, gh-3504
-    start = start * 1.
+    start *= 1.
     stop = stop * 1.
 
     y = range(0, num)

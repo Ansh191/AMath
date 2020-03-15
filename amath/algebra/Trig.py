@@ -1,0 +1,2 @@
+class Trig:
+    pass

@@ -82,15 +82,15 @@ double _tanh(double a)
 
 double _coth(double a)
 {
-    return cosh(a) / sinh(a)
+    return cosh(a) / sinh(a);
 }
 
 double _sech(double a)
 {
-    return 1.0 / cosh(a)
+    return 1.0 / cosh(a);
 }
 
-double _cosh(double a)
+double _csch(double a)
 {
     return 1.0 / sinh(a);
 }
@@ -191,18 +191,18 @@ m_acsc(PyObject *self, PyObject *args) {
   return Py_BuildValue("d", _acsc(in));
 }
 
-static PyObject *
-m_sinh(PyObject *self, PyObject *args)
-{
-    PyObject *in;
-    if (!PyArg_UnpackTuple(args, "sinh", 1, 1, &in))
-        return NULL
-
-    if (PyComplex_Check(in))
-    {
-
-    }
-}
+//static PyObject *
+//m_sinh(PyObject *self, PyObject *args)
+//{
+//    PyObject *in;
+//    if (!PyArg_UnpackTuple(args, "sinh", 1, 1, &in))
+//        return NULL;
+//
+//    if (PyComplex_Check(in))
+//    {
+//
+//    }
+//}
 
 static PyMethodDef _trigMethods[] = {
     { "sin", (PyCFunction)m_sin, METH_VARARGS, "Sine of x" },
@@ -220,13 +220,22 @@ static PyMethodDef _trigMethods[] = {
     { NULL, NULL, 0, NULL }        /* Sentinel */
 };
 
+static struct PyModuleDef _trigmodule = {
+    PyModuleDef_HEAD_INIT,
+    "_trig",
+    NULL,
+    -1,
+    _trigMethods
+};
 
-PyMODINIT_FUNC
-init_trig(void)
+
+PyMODINIT_FUNC PyInit__trig(void)
 {
   PyObject *m;
 
-  m = Py_InitModule("_trig", _trigMethods);
+  m = PyModule_Create(&_trigmodule);
   if (m == NULL)
     return;
+
+  return m;
 }

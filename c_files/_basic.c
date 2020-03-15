@@ -221,12 +221,19 @@ static PyMethodDef _basicMethods[] = {
 	{ NULL, NULL, 0, NULL }        /* Sentinel */
 };
 
-PyMODINIT_FUNC
-init_basic(void)
+static struct PyModuleDef _basicmodule = {
+    PyModuleDef_HEAD_INIT,
+    "_basic",
+    NULL,
+    -1,
+    _basicMethods
+};
+
+PyMODINIT_FUNC PyInit__basic(void)
 {
 	PyObject* m;
 
-	m = Py_InitModule3("_basic", _basicMethods, "Basic Mathematical Functions");
+	m = PyModule_Create(&_basicmodule);
 
 	if (m == NULL)
 		return NULL;

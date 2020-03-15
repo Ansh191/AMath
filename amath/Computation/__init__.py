@@ -1,4 +1,7 @@
 from .Basic import *
+from .SpecialFunctions import *
+from .complex import *
+from .hyperbolic import *
 from .means import *
 from .num_properties import *
 from .permutations import *

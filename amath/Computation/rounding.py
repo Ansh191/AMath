@@ -1,119 +1,56 @@
-# def ceil(x):
-#     """
-#     Returns the ceiling of a number
-#     :param x: float
-#     :return: integer
-#
-#     >>> ceil(5.3)
-#     6
-#     >>> ceil(6)
-#     6
-#     >>> ceil(-5.3)
-#     -5
-#     """
-#     try:
-#         if type(x) == str:
-#             forstring = float(x)
-#             y = int(forstring)
-#         else:
-#             y = int(x)
-#     except:
-#         try:
-#             return (x // 1) + 1
-#         except:
-#             raise TypeError("A float is required")
-#     if y == float(x):
-#         return x
-#     if float(x) > y:
-#         return y + 1
-#     else:
-#         return y
-#
+import amath.ext._rounding as r
 
-def floor(x):
-    """
-    floors float
-    :param x: float
-    :return: floor of x
+ROUND_TRUNC = 'ROUND_TRUNC'  # Round towards 0
+ROUND_CEILING = 'ROUND_CEILING'  # Round towards Infinity
+ROUND_FLOOR = 'ROUND_FLOOR'  # Round towards -Infinity
+ROUND_UP = 'ROUND_UP'  # Round away from zero
+ROUND_HALF_UP = 'ROUND_HALF_UP'  # Round to nearest with ties going towards Infinity
+ROUND_HALF_AWAY = 'ROUND_HALF_AWAY'  # Round to nearest with ties going away from 0
+ROUND_HALF_EVEN = 'ROUND_HALF_EVEN'  # Round to nearest with ties going to nearest even
+ROUND_HALF_IN = 'ROUND_HALF_IN'  # Round to nearest with ties going towards 0
+ROUND_HALF_DOWN = 'ROUND_HALF_DOWN'  # Round to nearest with ties going towards -Infinity
 
-    >>> floor(5.3)
-    5
-    >>> floor(-5.3)
-    -6
-    >>> floor(0)
-    0
-    """
-    try:
-        y = int(x)
-    except:
-        try:
-            return x // 1
-        except:
-            raise TypeError("A float is required")
-    if y < 0:
-        return y - 1
+
+def round(n, d=0, *, tp=ROUND_HALF_AWAY):
+    if tp == ROUND_TRUNC:
+        return r.trunc(n, d)
+    if tp == ROUND_CEILING:
+        return r.ceil(n, d)
+    if tp == ROUND_FLOOR:
+        return r.floor(n, d)
+    if tp == ROUND_UP:
+        return r.away(n, d)
+    if tp == ROUND_HALF_UP:
+        return r.half_up(n, d)
+    if tp == ROUND_HALF_AWAY:
+        return r.half_away(n, d)
+    if tp == ROUND_HALF_EVEN:
+        return r.half_even(n, d)
+    if tp == ROUND_HALF_IN:
+        return r.half_in(n, d)
+    if tp == ROUND_HALF_DOWN:
+        return r.half_down(n, d)
     else:
-        return y
+        raise ValueError("Rounding Type not given")
 
 
-#
-#
-# def trunc(x):
-#     """
-#     Return X truncated
-#     :param x: any float or int
-#     :return: X truncated
-#     >>> trunc(5.2)
-#     5
-#     >>> trunc(-5.2)
-#     -5
-#     """
-#     if x > 0:
-#         y = floor(x)
-#     else:
-#         y = ceil(x)
-#     return y
+def floor(n, d=0):
+    return round(n, d, tp=ROUND_FLOOR)
 
 
-def round(x, m=0):
-    """
-    rounds X to nearest integer
-    :param m: 
-    :param x:
-    :return:
+def ceil(n, d=0):
+    return round(n, d, tp=ROUND_CEILING)
 
-    >>> round(5)
-    5.0
-    >>> round(2.5000000001)
-    3.0
-    >>> round(-2.56)
-    -3.0
 
-    If X is exactly mid way- round to even number
+def trunc(n, d=0):
+    return round(n, d, tp=ROUND_TRUNC)
 
-    >>> round(5.5)
-    6.0
-    >>> round(4.5)
-    4.0
-    """
-    b = 10 ** (-m)
 
-    def f(v):
-        intx = int(floor(v))
-        decx = v - intx
-        if decx < 0.5:
-            return intx
-        elif decx > 0.5:
-            return intx + 1
-        elif decx == 0.5:
-            if (intx + 1) % 2 == 0:
-                return intx + 1
-            else:
-                return intx
-
-    try:
-        return f(float(x) / float(b)) * float(b)
-    except ValueError:
-        raise TypeError("A float, integer, or complex is required")
-    except TypeError:
-        return complex(f(float(x.real) / b) * b, f(float(x.imag) / b) * b)
+def chop(x, max=1e-10):
+    if type(x) is complex:
+        if abs(x.imag) <= max:
+            x = x.real
+        if abs(x.real) <= max:
+            x = x.imag
+        return x
+    return x if abs(x) > max else 0

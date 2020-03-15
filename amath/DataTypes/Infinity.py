@@ -131,6 +131,12 @@ class _Infinity:
     __div__ = __truediv__
     __floordiv__ = __truediv__
 
+    def __rtruediv__(self, other):
+        if isinstance(other, _Infinity):
+            return Indeterminate
+        else:
+            return 0
+
     def __repr__(self):
         try:
             if self.n:
@@ -267,7 +273,8 @@ class _Infinity:
 
     def __float__(self):
         if self.n is None:
-            raise TypeError("Can not convert ComplexInfinity into a float")
+            return float("inf")
+            # raise TypeError("Can not convert ComplexInfinity into a float")
         elif self.n:
             return float("inf")
         else:

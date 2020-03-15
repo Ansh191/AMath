@@ -1,7 +1,7 @@
 from distutils.core import setup, Extension
 
 module1 = Extension('_trig',
-                    sources=['test.c'])
+                    sources=['_trig.c'])
 
 setup(name='_trig',
       version='0.1',

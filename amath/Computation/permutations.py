@@ -1,9 +1,7 @@
 from .Basic import fac
 
 
-def comb(n, k):
-    n = float(n)
-    k = float(k)
+def binomial(n, k):
     if k > n:
         return 0
     if k < 0:

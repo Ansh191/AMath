@@ -1,23 +1,31 @@
-import amath.ext._trig as _t
+try:
+    import amath.ext._trig as _t
+except ImportError:
+    print("_trig failed to load")
 
-from amath.constants import e, pi
+import amath.Computation.hyperbolic as hyp
+import amath.constants as const
 
 
 def degtorad(d):
-    return (d * pi) / 180
+    return (d * const.pi) / 180
 
 
 def radtodeg(r):
-    return (r * 180) / pi
+    return (r * 180) / const.pi
 
 
 def sin(a):
-    if a == pi:
+    if a == const.pi:
         return 0
     try:
         return _t.sin(a)
     except TypeError:
-        return (e ** (1j * a)).imag
+        if type(a) == complex:
+            x = a.real
+            y = a.imag
+            return sin(x) * hyp.cosh(y) + 1j * cos(x) * hyp.sinh(y)
+        return (const.e ** (1j * a)).imag
 
 
 def cos(a):
@@ -29,7 +37,11 @@ def cos(a):
     try:
         return _t.cos(a)
     except TypeError:
-        return (e ** (1j * a)).real
+        if type(a) == complex:
+            x = a.real
+            y = a.imag
+            return cos(x) * hyp.cosh(y) + 1j * sin(x) * hyp.sinh(y)
+        return (const.e ** (1j * a)).real
 
 
 def tan(a):
@@ -65,11 +77,26 @@ def arccos(a):
     try:
         return _t.acos(a)
     except TypeError:
-        return (pi / 2.0) - arcsin(a)
+        return (const.pi / 2.0) - arcsin(a)
 
 
 def arctan(a):
     return _t.atan(a)
+
+
+def arctan2(y, x):
+    if x > 0:
+        return arctan(y / x)
+    if x < 0 <= y:
+        return arctan(y / x) + const.pi
+    if x < 0 and y < 0:
+        return arctan(y / x) - const.pi
+    if x == 0 and y > 0:
+        return const.pi / 2
+    if x == 0 and y < 0:
+        return -const.pi / 2
+    if x == 0 and y == 0:
+        raise ZeroDivisionError
 
 
 def arccot(a):

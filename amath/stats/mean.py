@@ -1,6 +1,3 @@
-import amath.ext._statistics as s
-
-
 def mean(x):
     # type: (list) -> float
     return s.mean(list(x))

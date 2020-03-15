@@ -1,3 +1,4 @@
+from amath.DataTypes.Fraction import Fraction
 from amath.DataTypes.types import FunctionType
 from amath.Errors import InterpretationError
 
@@ -47,15 +48,10 @@ def isnan(x):
 
 def intQ(x):
     try:
-        x = float(x)
-    except (ValueError, TypeError):
-        return False
-    try:
         if int(x) == x:
             return True
-        else:
-            return False
-    except OverflowError:
+        return False
+    except (TypeError, ValueError):
         return False
 
 
@@ -70,8 +66,7 @@ def isReal(x):
 
 
 def isWhole(x):
-    t = intQ(x)
-    if not t:
+    if not intQ(x):
         return False
     if x < 0:
         return False
@@ -79,8 +74,7 @@ def isWhole(x):
 
 
 def isNatural(x):
-    t = intQ(x)
-    if not t:
+    if not intQ(x):
         return False
     if x <= 0:
         return False
@@ -113,6 +107,10 @@ def isValue(x):
         return True
     except AttributeError:
         return False
+
+
+def isFraction(x):
+    return isinstance(x, Fraction)
 
 
 def interpreter(t, boolreturn=False):

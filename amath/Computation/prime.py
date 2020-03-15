@@ -1,7 +1,10 @@
-from functools import lru_cache
+from amath.Computation.power import ln
+from .SpecialFunctions import li
 
-from .power import log
-from ..constants import EulerMascheroni, e
+try:
+    import amath.ext._prime as _p
+except ModuleNotFoundError:
+    print("_prime failed to import")
 
 known_primes = [2, 3]
 
@@ -15,11 +18,12 @@ def _try_composite(a, d, n, s):
     return True
 
 
-def primeQ(n, prec=30):
-    # type: (int, int) -> bool
+def primeQ(n: int, prec: int = 30) -> bool:
     """
-    Checks if X is prime
-    :param prec: precision for very large number( > 3317044064679887385961980)
+    Checks if X is prime using Miller-Rabin primality Test
+    Uses c-api
+
+    :param prec: precision for very large number( > 3317044064679887385961980 or 3.317e24)
     :param n: suspected prime
     :return: boolean
 
@@ -33,9 +37,8 @@ def primeQ(n, prec=30):
     False
     >>> primeQ(20)
     False
-    >>> primeQ(5.5)
-    Traceback (most recent call last):
-    TypeError: 5.5 is not an integer
+    >>> primeQ(29996224275833)
+    True
     """
     # from amath.Computation.Basic import sqrt
     # try:
@@ -84,15 +87,29 @@ def primeQ(n, prec=30):
     #             return False
     # return True
 
+    # if n in known_primes:
+    #     return True
+    # if any((n % p) == 0 for p in known_primes):
+    #     return False
+
+    try:
+        return _p.primeQ(n)
+    except (ValueError, TypeError, AttributeError):
+        pass
+
+    if n < 2:
+        return False
     if n in known_primes:
         return True
-    if any((n % p) == 0 for p in known_primes):
-        return False
     d, s = n - 1, 0
     while not d % 2:
         d, s = d >> 1, s + 1
 
+    # print(s)
+    # print(d)
+
     if n < 1373653:
+        # print(any(_try_composite(a, d, n, s) for a in (2, 3)))
         return not any(_try_composite(a, d, n, s) for a in (2, 3))
     if n < 25326001:
         return not any(_try_composite(a, d, n, s) for a in (2, 3, 5))
@@ -109,25 +126,25 @@ def primeQ(n, prec=30):
     if n < 3825123056546413051:
         return not any(_try_composite(a, d, n, s) for a in (2, 3, 5, 7, 11, 13, 17, 19, 23))
     if n < 318665857834031151167461:
-        return not any(_try_composite(a, d, n, s) for a in (2, 3, 5, 7, 11, 13, 17, 23, 29, 31, 37))
+        return not any(_try_composite(a, d, n, s) for a in (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37))
     if n < 3317044064679887385961981:
-        return not any(_try_composite(a, d, n, s) for a in (2, 3, 5, 7, 11, 13, 17, 23, 29, 31, 37, 41))
+        return not any(_try_composite(a, d, n, s) for a in (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41))
 
-    return any(_try_composite(a, d, n, s) for a in known_primes[:prec])
+    return not any(_try_composite(a, d, n, s) for a in known_primes[:prec])
 
 
 known_primes += [x for x in range(5, 1000, 2) if primeQ(x)]
 
-@lru_cache()
-def compositeQ(x):
+
+def compositeQ(x, prec=30):
     """
     Tests if X is composite
+
+    :param prec:
     :param x:
     :return: boolean
 
     >>> compositeQ(5)
-    False
-    >>> compositeQ(2.5)
     False
     >>> compositeQ(6)
     True
@@ -136,41 +153,57 @@ def compositeQ(x):
     >>> compositeQ(-2)
     False
     """
+    if x == 0:
+        return False
+
     try:
-        x = int(x)
-    except (ValueError, TypeError):
-        raise TypeError(str(x) + " is not an integer")
+        return _p.compositeQ(x)
+    except (ValueError, TypeError, AttributeError):
+        pass
+
     if x > 0:
-        if not primeQ(x):
+        if not primeQ(x, prec):
             return True
         else:
             return False
     return False
 
 
-def li(x):
-    from ..stats.stats import sum
-    from .Basic import fac
+# def _ln(x):
+#     man = None
+#     pass
 
-    if x == 0:
-        return 0
-    elif x == 1:
-        return float('-inf')
 
-    return EulerMascheroni + log(log(x, e), e) + sum(lambda k: ((log(x, e)) ** k) / (fac(k) * k), 1, float('inf'))
+# def prime_generator(lower, upper):
+#     if lower % 2 == 0:
+#         lower -= 1
+#     i = lower
+#     current = None
+#     while i < upper:
+#         if i < 996:
+#             i = [j for n, j in enumerate(known_primes) if j > i][0]
+#             if i != current:
+#                 yield i
+#         if not any(i % n == 0 for n in known_primes):
+#             print(i)
+#             if primeQ(i):
+#                 yield i
+#         i += 2
 
 
 def prime(n):
-    f = 2
-    n2 = 0
+    # f = 2
+    # n2 = 0
+
     try:
-        n = int(n)
-    except (ValueError, TypeError):
-        raise TypeError(str(n) + " is not an integer")
+        return _p.prime(n)
+    except (ValueError, TypeError, AttributeError):
+        pass
+
     if n <= 0:
         raise ValueError("n must be greater than 0")
-    elif n == 1:
-        return 2
+    elif n < len(known_primes):
+        return known_primes[n - 1]
 
     # while n2 != n:
     #     test = primeQ(f)
@@ -180,24 +213,35 @@ def prime(n):
     #         break
     #     f += 1
     # return f
-    a = 2
-    b = int(n * (log(n, e) + log(log(n, e), e)))
+    # a = 2
+    # b = int(n * (log(n, e) + log(log(n, e), e)))
+    #
+    # while a < b:
+    #     mid = (a + b) >> 1
+    #     if li(mid) > n:
+    #         b = mid
+    #     else:
+    #         a = mid + 1
+    # n_primes = primepi(a - 1)
+    # while n_primes < n:
+    #     if primeQ(a):
+    #         n_primes += 1
+    #     a += 1
+    # return a - 1
 
-    while a < b:
-        mid = (a + b) >> 1
-        if li(mid) > n:
-            b = mid
-        else:
-            a = mid + 1
-    n_primes = primepi(a - 1)
-    while n_primes < n:
-        if primeQ(a):
-            n_primes += 1
-        a += 1
-    return a - 1
+    lower = int(n * ln(n) + n * (ln(ln(n)) - 1))
+    if lower % 2 == 0:
+        lower += 1
+    upper = int(n * ln(n) + n * ln(ln(n)))
+    print(lower, upper)
+    for i in range(lower, upper, 2):
+        if not primeQ(i):
+            continue
+        if primepi(i) == n:
+            return i
 
 
-def unitstep(x):
+def _unitstep(x):
     if x < 0:
         return 0
     elif x >= 0:
@@ -206,9 +250,38 @@ def unitstep(x):
         return
 
 
-def primepi(n):
-    # from ..stats.stats import sum
-    # return sum(lambda x: unitstep(n - sy.prime(x)), 1, abs(n))
+def primepi(n, *, approx=2 ** 40):
+    """
+    Prime Counting function
+    Counts number of prime numbers less than or equal to n
+    Will approximate using Prime Number Theorem if n is greater than approx
+
+    :param n: Integer to find the number of primes less than or equal to
+    :param approx: Cutoff to start approximating instead of finding exact answers
+    :return: Number of primes less than or equal to n
+
+    >>> primepi(100)
+    25
+    >>> primepi(10000)
+    1229
+    >>> primepi(61)
+    18
+    >>> primepi(60)
+    17
+
+    Will approximate after approx
+    >>> primepi(100, 50)
+    29
+    >>> primepi(10000, 1000)
+    1244
+    """
+    if n > approx:
+        return int(li(n) - li(2))
+
+    try:
+        return _p.primepi(int(n))
+    except (ValueError, TypeError, AttributeError):
+        pass
 
     n = int(n)
     if n < 2:
@@ -268,12 +341,19 @@ def primenumber(n):
 
 
 def prime_factor(n):
+    if n <= 0:
+        raise ValueError("n must be greater than 0")
+    try:
+        return _p.prime_factor(n)
+    except (TypeError, NameError):
+        pass
+
     primes = []
     while n != 1:
         for i in range(1, primepi(n) + 1):
             x = prime(i)
             if n % x == 0:
-                n /= x
+                n //= x
                 primes.append(x)
                 break
     return primes

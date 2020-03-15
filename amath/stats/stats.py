@@ -30,7 +30,7 @@ def sum(f, i=None, maximum=None, step=1, l=None):
 
     if l is None:
         x = 0
-        previous_value = 0
+        previous_value = None
         while i <= maximum:
             value = f(i)
             if value == previous_value:

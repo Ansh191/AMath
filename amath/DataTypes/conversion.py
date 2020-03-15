@@ -14,7 +14,7 @@ def tolong(x):
     try:
         return long(x)
     except NameError:
-        from amath.Errors.Errors import Failure
+        from amath.Errors import Failure
         raise Failure("Long is not supported")
 
 

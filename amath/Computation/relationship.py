@@ -1,10 +1,7 @@
-
-
-def gcd(x, y):
+def gcd(*n):
     """
     Find the greatest common denominator.
-    :param x:
-    :param y:
+    :param n: list of numbers to find GCD of
     :return:
 
     >>> gcd(10,2)
@@ -16,9 +13,20 @@ def gcd(x, y):
     >>> gcd(23, 81)
     1.0
     """
+    if len(n) < 1:
+        raise TypeError("gcd() takes a minimum of 1 arguments")
+    if len(n) == 1:
+        return n[0]
+    result = n[0]
+    for i in range(1, len(n)):
+        result = _gcd(result, n[i])
+    return result
+
+
+def _gcd(x, y):
     try:
-        x = float(x)
-        y = float(y)
+        x = int(x)
+        y = int(y)
     except:
         raise TypeError("{0} or {1} are not numbers".format(str(x), str(y)))
 
@@ -38,14 +46,19 @@ def gcd(x, y):
     return 0
 
 
-def lcm(x, y):
+def lcm(*n):
+    if len(n) < 1:
+        raise TypeError("lcm() takes a minimum of 1 arguments")
+    if len(n) == 1:
+        return n[0]
+    result = n[0]
+    for i in range(1, len(n)):
+        result = _lcm(result, n[i])
+    return result
+
+
+def _lcm(x, y):
     try:
-        answer = float(abs(x * y)) / gcd(x, y)
+        return int(abs(x * y) / _gcd(x, y))
     except ZeroDivisionError:
-        raise ValueError("both x and y cannot be 0")
-    except TypeError:
-        raise TypeError("A float is required")
-    if answer.is_integer():
-        return int(answer)
-    else:
-        return answer
+        raise ValueError("Both x and y cannot be 0")

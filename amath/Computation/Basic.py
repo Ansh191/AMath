@@ -1,4 +1,13 @@
-import amath.ext._basic as _b
+try:
+    import amath.ext as _b
+except ModuleNotFoundError:
+    print("_basic failed to import")
+
+GammaN = 10
+GammaR = 10.900511
+GammaDk = [2.48574089138753565546e-5, 1.05142378581721974210, -3.45687097222016235469, 4.51227709466894823700,
+           -2.98285225323576655721, 1.05639711577126713077, -1.95428773191645869583e-1, 1.70970543404441224307e-2,
+           -5.71926117404305781283e-4, 4.63399473359905636708e-6, -2.71994908488607703910e-9]
 
 
 def sqrt(x):
@@ -18,8 +27,8 @@ def sqrt(x):
 
     If X is negative, Returns a complex number
 
-    >>> sqrt(-1)
-    1j
+    >>> sqrt(-4)
+    2j
     >>> sqrt(-16)
     4j
 
@@ -53,9 +62,6 @@ def sqrt(x):
 
 # noinspection PyShadowingBuiltins
 def abs(x):
-    # type: (float) -> float
-    # type: (int) -> float
-    # type: (complex) -> float
     """
     Returns the absolute value of a float
     :param x: float, int, complex
@@ -94,7 +100,6 @@ def abs(x):
 
 # TODO-Look at gamma
 def fac(x):
-    # type: (float) -> float
     """
     Finds x factorial
     :param x: integer
@@ -109,16 +114,12 @@ def fac(x):
     >>> fac(float("inf"))
     inf
     """
-    x = float(x)
     if x == 0:
         return 1.0
     elif x < 0:
         from amath.constants import Cinf
         return Cinf
-    else:
-        if x > 170:
-            x = int(x)
-        return x * gamma(x)
+    return gamma(x + 1)
 
 
 # TODO-Allow gamma to accept complex numbers
@@ -131,23 +132,31 @@ def gamma(x):
         y = _b.gamma(x)  # call c-api
     except:
         t = True
-    from amath.DataTypes import Infinity
     from amath.testing.types import isinf, isnan, intQ
-    x = int(x)
     if x >= 170 or t:  # to not overflow float or if in _basic failure
-        if intQ(x):  # x must be an int
-            from amath.stats.stats import product
-            return product(lambda k: k, 1, x) // x
-        elif isinf(x):
-            if x > 0:
-                return Infinity(True)
+        try:
+            from amath.constants import e, pi
+            s = GammaDk[0]
+            for i in range(1, GammaN + 1):
+                s += GammaDk[i] / (x + i - 1.0)
+
+                return s * 2 * sqrt(e / pi) * pow((x - 0.5 + GammaR) / e, x - 0.5)
+        except OverflowError:
+            if intQ(x):  # x must be an int
+                from amath.stats.stats import product
+                return product(lambda k: k, 1, x) // x
+            elif isinf(x):
+                if x > 0:
+                    from amath.DataTypes import Infinity
+                    return Infinity(True)
+                else:
+                    from amath.Errors import Indeterminate
+                    raise Indeterminate()
             else:
-                from amath.Errors import Indeterminate
-                raise Indeterminate()
-        else:
-            raise TypeError("For values over 170, x must be a integer")
+                raise
     else:
         if isinf(y) or isnan(y):
+            from amath.DataTypes import Infinity
             return Infinity(None)
         elif isinstance(x, int) or int(x) == x:
             return int(y)
@@ -169,6 +178,20 @@ def fib(n):
         return int(int(gr ** n - cos(n * pi) / gr ** n) / sqrt(5))
     else:
         return y
+
+
+def rising_factorial(x, n):
+    product = 1
+    for k in range(n):
+        product *= x + k
+    return product
+
+
+def falling_factorial(x, n):
+    product = 1
+    for k in range(n):
+        product *= x - k
+    return product
 
 
 def N():

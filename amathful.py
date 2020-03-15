@@ -785,7 +785,7 @@ class _dateObject:
 
         if d is None:
 
-            x = dt.datetime.now()
+            x = d.datetime.now()
             self.d = x.day
             self.m = x.month
             self.y = x.year

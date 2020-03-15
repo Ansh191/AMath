@@ -19,7 +19,7 @@ def harmonicmean(l):
     for n in l:
         t += 1 / n
 
-    return n / t
+    return len(l) / t
 
 
 def quadmean(l):
@@ -30,4 +30,4 @@ def quadmean(l):
     for n in l:
         t += n * n
 
-    return root(t / n, 2)
+    return root(t / len(l), 2)

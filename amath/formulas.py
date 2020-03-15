@@ -1,8 +1,7 @@
-from collections import OrderedDict as OD
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
-from amath.DataTypes.Function import Function
+from amath.DataTypes.Function2 import Function
 from amath.Errors import Failure
 
 
@@ -32,29 +31,55 @@ def formulaData(x):
             raise Failure("Cannot connect to servers")
         return result.read()
 
-    textresult = wolfram_cloud_call(x=x)
-    return textresult.decode("ascii")
+    import re
+    textresult = wolfram_cloud_call(x=x)  # .decode("ascii")
+    # print(textresult)
+    textresult = textresult.split(b"==")[1]
+    var = re.findall(b"(\w+)(?=\",)", textresult)
+    # print(var)
+    textresult = textresult.replace(b"QuantityVariable[\"", b"")
+    textresult = re.sub(b'", "\w+"]', b"", textresult).replace(b"^", b"**")
+    # print(textresult)
+    return Function(textresult.decode(), list(map(bytes.decode, var)))
 
 
-Energy = Function(OD([('m', 'Real')]), 'm*(c**2)')
+EnergyRelativistic = Function('m*(c**2)', {'m': 'Real'})
 
-GravitationalForce = Function(OD([('m1', 'Real'), ('m2', 'Real'), ('d', 'Real')]), '(G*m1*m2)/(d**2)')
+GravitationalForce = Function('(G*m1*m2)/(d**2)', {'m1': 'Real', 'm2': 'Real', 'd': 'Real'})
 
-Pythagorean = Function(OD([('a', 'Real'), ('b', 'Real')]), 'sqrt((a**2)+(b**2))')
+Pythagorean = Function('sqrt((a**2)+(b**2))', {'a': 'Real', 'b': 'Real'})
 
-StandardNormalDistribution = Function(OD([('x', 'Real')]), '(e**(-(1/2.0)*(x**2)))/sqrt(2*pi)')
+StandardNormalDistribution = Function('(e**(-(1/2.0)*(x**2)))/sqrt(2*pi)', {'x': 'Real'})
 
-LorentzFactor = Function(OD([('v', "Real")]), "1.0/sqrt(1-(v**2)/(c**2))")
+NormalDistribution = Function('1/(e**((-m + x)**2/(2.*s**2))*sqrt(2*pi)*s)', {'m': 'Real', 's': 'Real', 'x': 'Real'})
 
-KineticEnergy = Function(OD([('m', "Real"), ('v', "Real")]), "(1/2.0)*m*(v**2)")
+LorentzFactor = Function("1.0/sqrt(1-(v**2)/(c**2))", {'v': 'Real'})
 
-Momentum = Function(OD([('k', "Real"), ('m', "Real")]), "sqrt(2)*sqrt(k*m)")
+KineticEnergy = Function("(1/2.0)*m*(v**2)", {'m': 'Real', 'v': 'Real'})
 
-MinimumPowerRequiredToMoveObject = Function(OD([('D', "Real"), ('m', "Real"), ('t', "Real")]), "(4*(D**2)*m)/(t**3)")
+Momentum = Function("m * v", {'m': 'Real', 'v': 'Real'})
 
-Velocity = Function(OD([('s', "Real"), ('t', "Real")]), "s/t")
+MinimumPowerRequiredToMoveObject = Function('(4*(D**2)*m)/(t**3)', {'D': 'Real', "m": 'Real', 't': 'Real'})
 
-Acceleration = Function(OD([('v', "Real"), ('t', "Real")]), 'v/t')
+Velocity = Function("s/t", {'s': 'Real', 't': 'Real'})
+
+Acceleration = Function('dv/dt', {'dv': 'Real', 'dt': 'Real'})
+
+EscapeVelocity = Function("sqrt(2)*sqrt((G * m)/r)", {"m": "real", "r": "real"})
+
+GravitationalPotentialEnergy = Function("g * h * m", {"g": "real", "h": "real", "m": 'real'})
+
+Density = Function("M / V", {"M": 'real', "V": "real"})
+
+NewtonsSecondLawConstantMass = Function("a * m", {"a": 'real', 'm': 'real'})
+
+MomentumKineticEnergy = Function("sqrt(2)*sqrt(k*m)", {'k': 'Real', 'm': 'Real'})
+
+Work = Function("a * d * m", {"a": "real", "d": 'real', "m": 'real'})
+
+TimeDilationRelativistic = Function("t/sqrt(1 - v**2/c**2)", {"t": 'Real', "v": 'Real'})
+
+TimeDilationGravitational = Function("t/sqrt(1 - (g*r)/c**2)", {"t": 'real', "g": 'real', "r": 'real'})
 
 
 def HarmonicNumber(n):
